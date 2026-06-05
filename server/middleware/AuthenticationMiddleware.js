@@ -1,4 +1,4 @@
-//middleware di express, per la protezione delle routes.
+//middleware di express, per la protezione delle routes. anche questo buona parte preso da intrnet è un implementazione standard
 
 const jwt = require('jsonwebtoken');
 const User = require('../model/User');

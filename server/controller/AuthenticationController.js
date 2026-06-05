@@ -1,4 +1,4 @@
-
+//controller per l autenticazione, buona parte è preso da internet, logica standard per jwt e bcrypt
 const User = require('../model/User');
 
 const bycript = require('bcryptjs');

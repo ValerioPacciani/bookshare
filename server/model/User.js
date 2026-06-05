@@ -1,7 +1,7 @@
 //this is the scheme for mongodb
 
-const moongoose = require('mongoose');
-const userSchema = new moongoose.Schema({
+const mongoose = require('mongoose');
+const userSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -40,4 +40,4 @@ const userSchema = new moongoose.Schema({
 
 userSchema.index({ location: '2dsphere' }) //crea l'indece gerosphere per la posizione. 
 
-module.exports = moongoose.model('User', userSchema);
+module.exports = mongoose.model('User', userSchema);
