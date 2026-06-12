@@ -37,6 +37,7 @@ const Register = () => {
             navigate('/');
 
         } catch (error) {
+            //TODO MOSTRARE ERRORI NELLA PAGINA
             console.error(error.response.data.message)
         }
     }
