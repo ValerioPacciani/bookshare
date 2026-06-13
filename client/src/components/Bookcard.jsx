@@ -2,15 +2,17 @@
 
 
 const Bookcard = ({ title, author, coverImage }) => {
+    console.log(coverImage)
     return (
-        <div className="h-80 w-48 bg-amber-300 flex flex-col rounded-md">
-            <div className="bg-gray-50 h-4/5">
+        <div className=" mt-1.5 ml-2 h-80 w-48 flex flex-col rounded-md border-2 border-gray-400 bg-gray-700">
+            <div className="h-4/5 overflow-visible">
+                <img className = "" src={coverImage}></img>
             </div>
-            <div>
-                <p>{title}</p>
+            <div className="flex flex-row items-center justify-center  bg-gray-200/50 ">
+                <p className="font-semibold  truncate w-full ">{title}</p>
             </div>
-            <div>
-                <p>{author}</p>
+            <div className="flex flex-row items-center justify-center bg-gray-200/50"> 
+                <p className="font-light  truncate w-full ">{author}</p>
             </div>
         </div>
     )

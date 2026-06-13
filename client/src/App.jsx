@@ -5,7 +5,7 @@ import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'
 
-
+//REMBER TODO quando creo una chiamata di post se ho un immagine devo farlo sempre con multipart/form-data altimenti multer mi da errore nel backend
 
 function App() {
   return (

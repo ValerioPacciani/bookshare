@@ -27,7 +27,15 @@ const getBookById = async (req, res) => {
 
 const createBook = async (req, res) => {
     try {
-        const { title, author, isbn, coverImage, categories } = req.body;
+        const { title, author, isbn, categories } = req.body;
+        //Gestisco l immagine con multer e il campo file
+        let coverImage = "";
+        if (req.file) {
+            coverImage = req.file.path; //ovvero l url dell immagine contenuta in req.file di multer, non i metadati
+        } else {
+            coverImage = "";
+        }
+        
         const owner = req.user._id; //sto usando il token per prendere l id dell autore
         if (!title || !author) {
             return res.status(400).json({ message: 'Titolo e autore sono obbligatori' })
@@ -65,7 +73,15 @@ const deleteBook = async (req, res) => {
 
 const updateBook = async (req, res) => {
     try {
-        const { title, author, isbn, coverImage, categories } = req.body;
+        const { title, author, isbn, categories } = req.body;
+
+        let coverImage = "";
+        if (req.file) {
+            coverImage = req.file.path;
+        } else {
+            coverImage = "";
+        }
+
         const book = await Book.findOneAndUpdate(
             { _id: req.params.id, owner: req.user._id },
             { title, author, isbn, coverImage, categories },

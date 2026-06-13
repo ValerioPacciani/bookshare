@@ -19,8 +19,8 @@ const Navbar = () => {
     }
 
     const { user } = useAuth()
-    console.log(localStorage.getItem("user"))
-    console.log('user dal context:', user)
+    //console.log(localStorage.getItem("user"))
+    //console.log('user dal context:', user)
 
 
 
