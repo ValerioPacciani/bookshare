@@ -10,11 +10,11 @@ const Sidebar = () => {
             </div>
             <div className="flex flex-row space-x-3  hover:bg-slate-400  ml-4 rounded-2xl">
                 <Map />
-                <Link to={"/"}>Map</Link>
+                <Link to={"/map"}>Map</Link>
             </div>
             <div className="flex flex-row space-x-3  hover:bg-slate-400  ml-4 rounded-2xl">
                 <Compass />
-                <Link to={"/"}>Discover</Link>
+                <Link to={"/requests"}>Requests</Link>
             </div>
             <div className="flex flex-row space-x-3  hover:bg-slate-400  ml-4 rounded-2xl">
                 <Cog />

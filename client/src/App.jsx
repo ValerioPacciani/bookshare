@@ -4,7 +4,8 @@ import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'
-
+import Requests from './pages/Requests'
+import Map from './pages/Map'
 //REMBER TODO quando creo una chiamata di post se ho un immagine devo farlo sempre con multipart/form-data altimenti multer mi da errore nel backend
 
 function App() {
@@ -14,6 +15,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/map" element={<Map />} />
+        <Route path="/requests" element={<Requests />} />
       </Routes>
     </BrowserRouter>
   )
