@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { X, CirclePlus } from "lucide-react"
 import axiosClient from "../api/axiosConfig";
+import { Navigate } from "react-router-dom";
+
 //TODO ISBN E CATEGORIE
 const NewBookModal = ({ onclose }) => {
     const [title, setTitle] = useState("");
@@ -19,19 +21,26 @@ const NewBookModal = ({ onclose }) => {
 
     }
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
         //creo l'oggetto da inviare al backend
         const fData = new FormData()
         fData.append("title", title);
         fData.append("author", author);
-        fData.append("imageCover", file);
+        fData.append("coverImage", file); 
+        console.log("dati pronti: " +title + author + file)
         //invio al backand
-        await axiosClient.post('/api/books', fData);
+       try {
+        const resp = await axiosClient.post('/api/books', fData);
 
+        console.log(resp);
+        Navigate("/")
+
+    }   catch (error) {
+            console.error(error.response.data.message);
     }
 
-
-
+    }
     return (
 
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center">

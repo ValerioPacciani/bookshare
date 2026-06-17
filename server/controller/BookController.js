@@ -19,6 +19,7 @@ const getBookById = async (req, res) => {
             res.status(200).json(book);
         }
     } catch (error) {
+        console.error("Errore getBookById:", error);    
         res.status(500).json({ message: 'Server Error', error: error.message })
     }
 }
@@ -33,7 +34,7 @@ const createBook = async (req, res) => {
         if (req.file) {
             coverImage = req.file.path; //ovvero l url dell immagine contenuta in req.file di multer, non i metadati
         } else {
-            coverImage = "";
+            coverImage =  "https://res.cloudinary.com/dcmko59gs/image/upload/v1781697204/book-cover-placeholder_a4t8on.png"
         }
         
         const owner = req.user._id; //sto usando il token per prendere l id dell autore
@@ -54,6 +55,7 @@ const createBook = async (req, res) => {
         })
         res.status(201).json({ message: 'Libro creato con successo', book })
     } catch (error) {
+        console.log("errore di creazione", error);
         res.status(500).json({ message: 'Server Error', error: error.message })
     }
 }

@@ -9,6 +9,7 @@ const BookRouter = express.Router();
 
 BookRouter.get("/", protectionMiddleware, controller.getAllBooks); 
 BookRouter.get("/:id", protectionMiddleware, controller.getBookById); 
+//coverImage è il nome del file che deve intercettare, è inportante che sia uguale!
 BookRouter.post("/", protectionMiddleware, uploadMiddleware.single('coverImage'),controller.createBook); //sui post avro anche l upload per gestire le immagini
 BookRouter.put("/:id", protectionMiddleware,uploadMiddleware.single('coverImage'),controller.updateBook);
 BookRouter.delete("/:id", protectionMiddleware, controller.deleteBook);

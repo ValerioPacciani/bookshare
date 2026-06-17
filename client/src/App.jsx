@@ -6,6 +6,9 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import Requests from './pages/Requests'
 import Map from './pages/Map'
+import BookDetail  from './pages/BookDetail'
+
+
 //REMBER TODO quando creo una chiamata di post se ho un immagine devo farlo sempre con multipart/form-data altimenti multer mi da errore nel backend
 
 function App() {
@@ -17,6 +20,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/map" element={<Map />} />
         <Route path="/requests" element={<Requests />} />
+        <Route path="/books/:id" element={<BookDetail />} />
       </Routes>
     </BrowserRouter>
   )
