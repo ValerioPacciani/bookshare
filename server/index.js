@@ -10,6 +10,7 @@ const express = require("express");
 const connectDB = require("./config/db");
 const { connectCloudinary } = require("./config/cloudinary");
 const LoanRouter = require("./routes/LoanRoutes");
+const userRouter = require("./routes/UserRoutes");
 
 connectDB();
 connectCloudinary();
@@ -24,6 +25,7 @@ app.use(express.json()); //middleware per il parsing del body in  JSON
 app.use("/api/auth", Approuter); //middleware per le rotte, tutte le rotte che iniziano con api/auth vengono gestite da routes.js
 app.use("/api/books", BookRouter);
 app.use("/api/loans", LoanRouter);
+app.use("/api/user", userRouter);
 
 app.get("/", (req, res) => res.json({ message: "BookShare API attiva" }));
 

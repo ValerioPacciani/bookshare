@@ -10,8 +10,6 @@ const Approuter = express.Router(); //oggetto che mi permette di creare delle ro
 Approuter.post("/register", controller.registerUser);
 Approuter.post("/login", controller.loginUser);
 
-
-
 //TODO aggiungere le route per la modifica dell utente e l aggiunta dell avatar
 
 module.exports = Approuter;

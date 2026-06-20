@@ -116,9 +116,19 @@ const updateBook = async (req, res) => {
 
 const getNearBooks = async (req, res) => {
   try {
-    const latidutine = req.query.lat;
-    const longitudine = req.query.lng;
+    const userId = req.user._id; //id presente nel context
+    if (!userId) {
+      return res.status(404).json({ message: "utente inesistente" }); //this sould never happen becouse we are logged in the context
+    }
+    const user = await User.findById(userId);
+    const userLocation = user.location;
+
+    const lat = userLocation.coordinates[1];
+    const long = userLocation.coordinates[0];
+    //console.log("latitudine:", lat);
+    //console.log("longitudine:", long);
     const radius = req.query.radius;
+    //console.log("radius =", parseInt(radius));
 
     const nearUsersResearch = await User.find({
       //this is the quesry we use to find a list of user that has these entryu in the db
@@ -126,22 +136,14 @@ const getNearBooks = async (req, res) => {
         $nearSphere: {
           $geometry: {
             type: "Point",
-            coordinates: [parseFloat(longitudine), parseFloat(latidutine)], //rember is lon firs and lat after
+            coordinates: [parseFloat(long), parseFloat(lat)], //rember is lon firs and lat after
           },
           $maxDistance: parseFloat(radius),
         },
       },
     });
-    const nearUsersId = [];
-    for (const u of nearUsersResearch) {
-      nearUsersId.push(i._id);
-    }
-    const booksToShare = await Book.find({
-      owner: { $in: nearUsersId },
-    });
-
-    return res.status(200).json(booksToShare);
-  } catch (errror) {
+    return res.status(200).json(nearUsersResearch);
+  } catch (error) {
     console.log(error.message);
     res.status(500).json({ message: "server error", error: error.message });
   }
