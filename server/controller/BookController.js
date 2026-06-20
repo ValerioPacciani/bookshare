@@ -1,6 +1,8 @@
 const Book = require("../model/Book");
 const User = require("../model/User");
 
+//STANDARD CREATE;GET;DELETE;UPDATE  BOOKS
+//________________________________________
 const getAllBooks = async (req, res) => {
   try {
     const bookArr = await Book.find({ owner: req.user._id });
@@ -112,6 +114,25 @@ const updateBook = async (req, res) => {
   }
 };
 
+//UTILTIES
+//________________________________________
+
+const getBooksOnShare = async (req, res) => {
+  try {
+    const userId = req.params.id;
+  
+    const booksOnShare = await Book.find({
+      owner: userId,
+      isOnShare: true,
+    });
+    console.log("booksonShare:", booksOnShare);
+    return res.status(200).json(booksOnShare);
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ message: "Server Error", error: error.message });
+  }
+};
+
 //Endpoints for the geolcalization systems
 
 const getNearBooks = async (req, res) => {
@@ -156,4 +177,5 @@ module.exports = {
   deleteBook,
   updateBook,
   getNearBooks,
+  getBooksOnShare,
 };

@@ -6,12 +6,24 @@ import { Popup } from "react-leaflet/Popup";
 import { useState } from "react";
 import { useEffect } from "react";
 import axiosClient from "../api/axiosConfig";
+import Bookcard from "../components/Bookcard";
 
 const Map = () => {
   const [userPosition, setUserPosition] = useState([]);
   const [nearUsers, setNearUsers] = useState([]);
+  const [sharedBooks, setSharedBooks] = useState([]);
   const [ready, setReady] = useState(false);
   const [radius, setRadius] = useState(parseInt(10000));
+
+  async function onMarkerClicked(id) {
+    try {
+      const resp = await axiosClient.get("/api/books/onShare/" + id); //id dell'utente che ho clickato
+      setSharedBooks(resp.data);
+      console.log("sharedBooks", sharedBooks);
+    } catch (error) {
+      console.log("errore nel fetch dei libri dell utente", id);
+    }
+  }
 
   async function fetchUserLocation() {
     try {
@@ -58,12 +70,13 @@ const Map = () => {
       <div>
         <MapContainer
           center={userPosition}
-          zoom={13}
+          zoom={20}
           style={{ height: "500px" }}
         >
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
           {nearUsers.map((u) => (
             <Marker
+              eventHandlers={{ click: () => onMarkerClicked(u._id) }}
               key={u._id}
               position={[u.location.coordinates[0], u.location.coordinates[1]]}
             ></Marker>
@@ -74,6 +87,19 @@ const Map = () => {
             </Popup>
           </Marker>
         </MapContainer>
+        <div className="grid grid-cols-4 gap-2 bg-gray-200">
+          <div>
+            avatar
+          </div>
+          <div className="col-span-3 grid grid-cols-6">
+        {sharedBooks.map((book) =>(
+          <Bookcard key={book._id} size = {"small"} mode = {"request"}title = {book.title} author= {book.author} isbn={book.isbn} coverImage = {book?.coverImage}>
+
+          </Bookcard>
+        ))}
+        </div>
+
+         </div>
       </div>
     );
   }

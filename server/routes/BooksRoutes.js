@@ -4,6 +4,7 @@ const express = require("express");
 const controller = require("../controller/BookController");
 const protectionMiddleware = require("../middleware/AuthenticationMiddleware");
 const uploadMiddleware = require("../middleware/ImagesUploaderMiddleware");
+const Book = require("../model/Book");
 
 const BookRouter = express.Router();
 
@@ -24,6 +25,11 @@ BookRouter.put(
 );
 
 BookRouter.get("/near", protectionMiddleware, controller.getNearBooks);
+BookRouter.get(
+  "/onShare/:id",
+  protectionMiddleware,
+  controller.getBooksOnShare,
+);
 
 //IMPORTANT THE :id ROUTES SHOULD BE AFTER THE OTHER OTHRWISE EXPRESS USE FIRST THE :id and it expects a value so it use the /near for exeple as an id value
 BookRouter.get("/:id", protectionMiddleware, controller.getBookById);
