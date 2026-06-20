@@ -23,6 +23,6 @@ BookRouter.put(
   controller.updateBook,
 );
 BookRouter.delete("/:id", protectionMiddleware, controller.deleteBook);
-BookRouter.get("/near/:id", protectionMiddleware, controller.getNearBook); //check the book near the users the id there is the user id
+BookRouter.get("/near/:id", protectionMiddleware, controller.getNearBooks); //check the book near the users the id there is the user id
 
 module.exports = BookRouter;

@@ -54,7 +54,7 @@ const createBook = async (req, res) => {
       return res.status(400).json({ message: "Hai già inserito questo libro" });
     }
     const book = await Book.create({
-      title,  //equivalent to title: title , if the key = value we can shorthands to the key name
+      title, //equivalent to title: title , if the key = value we can shorthands to the key name
       author,
       isbn,
       coverImage,
@@ -153,5 +153,5 @@ module.exports = {
   createBook,
   deleteBook,
   updateBook,
-  getNearBook,
+  getNearBooks,
 };
