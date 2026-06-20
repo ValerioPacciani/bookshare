@@ -112,10 +112,46 @@ const updateBook = async (req, res) => {
   }
 };
 
+//Endpoints for the geolcalization systems
+
+const getNearBooks = async (req, res) => {
+  try {
+    const latidutine = req.query.lat;
+    const longitudine = req.query.lng;
+    const radius = req.query.radius;
+
+    const nearUsersResearch = await User.find({
+      //this is the quesry we use to find a list of user that has these entryu in the db
+      location: {
+        $nearSphere: {
+          $geometry: {
+            type: "Point",
+            coordinates: [parseFloat(longitudine), parseFloat(latidutine)], //rember is lon firs and lat after
+          },
+          $maxDistance: parseFloat(radius),
+        },
+      },
+    });
+    const nearUsersId = [];
+    for (const u of nearUsersResearch) {
+      nearUsersId.push(i._id);
+    }
+    const booksToShare = await Book.find({
+      owner: { $in: nearUsersId },
+    });
+
+    return res.status(200).json(booksToShare);
+  } catch (errror) {
+    console.log(error.message);
+    res.status(500).json({ message: "server error", error: error.message });
+  }
+};
+
 module.exports = {
   getAllBooks,
   getBookById,
   createBook,
   deleteBook,
   updateBook,
+  getNearBook,
 };
