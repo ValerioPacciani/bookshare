@@ -22,7 +22,7 @@ const Sidebar = () => {
             </div>
             <div className="flex flex-row space-x-3 mb-4 hover:bg-slate-400  ml-4 rounded-2xl">
                 <User />
-                <Link to={"/"}>Profile</Link>
+                <Link to={"/profile"}>Profile</Link>
             </div>
 
         </div>

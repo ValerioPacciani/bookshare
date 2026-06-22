@@ -13,7 +13,7 @@ const BookDetail = () => {
   const navigate = useNavigate();
 
   const { id } = useParams(); // use param returns an object {id : 31} sop i need to destructure it, {id} so it returns 42
-
+  //TODO: tasto modifica e tasto, togli dalla condivisione
   async function handleShare() {
     try {
       const resShare = await axiosClient.put("/api/books/" + id, {
