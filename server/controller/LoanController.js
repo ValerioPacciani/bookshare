@@ -17,7 +17,7 @@ const getLoans = async (req, res) => {
 
 const createLoan = async (req, res) => {
     try {
-        const senderId = req.user._id
+        const senderId = req.user._id //l user di sessione
         const requestedBook = await Book.findById(req.params.id) //trovo il libro con l'id
         const ownerId = requestedBook.owner;
         if (!requestedBook) {

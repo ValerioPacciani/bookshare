@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import axiosClient from "../api/axiosConfig";
 import Bookcard from "../components/Bookcard";
+import Navbar from "../components/Navbar";
 
 const Map = () => {
   const [userPosition, setUserPosition] = useState([]);
@@ -22,6 +23,15 @@ const Map = () => {
       console.log("sharedBooks", sharedBooks);
     } catch (error) {
       console.log("errore nel fetch dei libri dell utente", id);
+    }
+  }
+
+  async function onRequestLoan(bookId) {
+    try {
+      const resp = axiosClient.post("api/loans/" + bookId)
+      console.log(resp.data)
+    } catch (error) {
+      console.log(error.message);
     }
   }
 
@@ -67,7 +77,10 @@ const Map = () => {
     );
   } else {
     return (
+
       <div>
+        <Navbar>
+        </Navbar>
         <MapContainer
           center={userPosition}
           zoom={20}
@@ -91,15 +104,15 @@ const Map = () => {
           <div>
             avatar
           </div>
-          <div className="col-span-3 grid grid-cols-6">
-        {sharedBooks.map((book) =>(
-          <Bookcard key={book._id} size = {"small"} mode = {"request"}title = {book.title} author= {book.author} isbn={book.isbn} coverImage = {book?.coverImage}>
+          <div className="col-span-3 grid lg:grid-cols-6 md:grid-cols-4 sm:grid-cols-2">
+            {sharedBooks.map((book) => (
+              <Bookcard className="mx-2" key={book._id} id={book._id} onRequestLoan={onRequestLoan} size={"small"} mode={"request"} title={book.title} author={book.author} isbn={book.isbn} coverImage={book?.coverImage}>
 
-          </Bookcard>
-        ))}
+              </Bookcard>
+            ))}
+          </div>
+
         </div>
-
-         </div>
       </div>
     );
   }

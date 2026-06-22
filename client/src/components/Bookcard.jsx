@@ -1,29 +1,45 @@
-//il compente che renderizza il singolo libro
+const Bookcard = ({ title, author, onRequestLoan, coverImage, isbn, size, mode, id }) => {
+  const isSmall = size === "small";
+  // Mantengo esattamente le tue classi di grandezza originarie
+  const size_classes = isSmall ? "h-48 w-32" : "h-80 w-48";
 
-const Bookcard = ({ title, author, onRequestLoan, coverImage, isbn, size, mode }) => {
-  //console.log(coverImage)
-  //we need to resize for the map component
-  const size_classes = size === "small" ? "h-48 w-32" : "h-80 w-48";
   return (
     <div
-      className={` mt-1.5 ml-2 ${size_classes} flex flex-col rounded-md border-2 border-gray-400 bg-gray-700`}
+      className={`relative ${size_classes} flex flex-col rounded-xl overflow-hidden border border-gray-600 bg-gray-900 shadow-md group`}
     >
-      <div className="h-4/5 overflow-hidden">
-        <img className="" src={coverImage}></img>
+      {/*Image container, we used inset-o, it means top-0,bottom-0,right-0, left-0 so it is the same height and wheight of the container */}
+      <img
+        className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+        src={coverImage}
+        alt={`Copertina di ${title}`}
+      />
+
+      {/* Band for rendering the text*/}
+      <div className="absolute bottom-0 left-0 right-0 p-1 flex flex-col gap-1 bg-gray-500/40 backdrop-blur-sm border-t border-white/10">
+
+        {/* Text rendering, troncated for the space */}
+        <div className="w-full text-center">
+          <h4 className={`font-bold tracking-tight text-white truncate ${isSmall ? "text-xs" : "text-sm"}`}>
+            {title}
+          </h4>
+          <p className={`text-gray-300 font-light truncate ${isSmall ? "text-[10px]" : "text-xs"}`}>
+            {author}
+          </p>
+        </div>
+
+        {/* Button for request Loan*/}
+        {mode === "request" && (
+          <button
+            onClick={() => onRequestLoan(id)}
+            className={`w-full cursor-pointer flex items-center justify-center font-semibold rounded-md bg-indigo-600 text-white shadow transition-all duration-200 hover:bg-indigo-500 active:scale-[0.95] ${isSmall ? "py-1 text-[10px] mt-0.5" : "py-1.5 text-xs mt-1"
+              }`}
+          >
+            Ask
+          </button>
+        )}
       </div>
-      <div className="flex flex-row items-center justify-center  bg-gray-200/20 ">
-        <p className="font-semibold  truncate w-full ">{title}</p>
-      </div>
-      <div className="flex flex-row items-center justify-center bg-gray-200/20">
-        <p className="font-light  truncate w-full ">{author}</p>
-      </div>
-      {mode === "request" && (
-        <button onClick = {onRequestLoan} className="inline-block cursor-pointer items-center justify-center rounded-xl border-[1.58px] border-zinc-600 bg-zinc-950 px-5 py-3 font-medium text-slate-200 shadow-md transition-all duration-300 hover:[transform:translateY(-.335rem)] hover:shadow-xl">
-          Ask
-        </button>
-      )}
     </div>
   );
 };
 
-export default Bookcard;
+export default Bookcard

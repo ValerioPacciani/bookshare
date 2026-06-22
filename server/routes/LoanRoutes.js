@@ -6,7 +6,10 @@ const LoanRouter = express.Router();
 
 
 LoanRouter.get("/", protectionMiddleware, controller.getLoans);
-LoanRouter.post("/:id", protectionMiddleware, controller.createLoan); //bookID (l' user lo prendo da quello)
+
 LoanRouter.get("/recevied", protectionMiddleware, controller.getLoansReceived);
+
+
+LoanRouter.post("/:id", protectionMiddleware, controller.createLoan); //bookID (l' user lo prendo da quello)
 
 module.exports = LoanRouter;
