@@ -120,7 +120,7 @@ const updateBook = async (req, res) => {
 const getBooksOnShare = async (req, res) => {
   try {
     const userId = req.params.id;
-  
+
     const booksOnShare = await Book.find({
       owner: userId,
       isOnShare: true,
@@ -152,6 +152,7 @@ const getNearBooks = async (req, res) => {
     //console.log("radius =", parseInt(radius));
 
     const nearUsersResearch = await User.find({
+      _id: { $ne: userId }, //exclude the active_user
       //this is the quesry we use to find a list of user that has these entryu in the db
       location: {
         $nearSphere: {

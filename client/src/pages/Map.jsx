@@ -8,6 +8,18 @@ import { useEffect } from "react";
 import axiosClient from "../api/axiosConfig";
 import Bookcard from "../components/Bookcard";
 import Navbar from "../components/Navbar";
+import { divIcon } from "leaflet";
+
+const UserIcon = divIcon({
+  html: ` <div style="background-color: red; border: 2px solid; border-radius:8px ;border-color:black;weight: 10px:height: 10px">
+	ciao
+</div> `,
+  className: "",
+  iconSize: [60, 70],
+  iconAnchor: [30, 70]
+
+
+})
 
 const Map = () => {
   const [userPosition, setUserPosition] = useState([]);
@@ -94,9 +106,11 @@ const Map = () => {
               position={[u.location.coordinates[0], u.location.coordinates[1]]}
             ></Marker>
           ))}
-          <Marker position={userPosition}>
+          <Marker position={userPosition}
+            interactive={false}
+            icon={UserIcon}>
             <Popup>
-              A pretty CSS3 popup. <br /> Easily customizable.
+              Your Position
             </Popup>
           </Marker>
         </MapContainer>
