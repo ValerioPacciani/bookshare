@@ -53,7 +53,7 @@ const BookDetail = () => {
 
   useEffect(() => {
     fetchId(id);
-  }, [refresh]); //id is important here, so the useEffect will be lunchede every time id param changes
+  }, [refresh]); //refresh is important here, so the useEffect will be lunchede every time id param changes
 
   console.log("bookdata", book);
   console.log("categoriesData : ", categories);

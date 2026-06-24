@@ -9,5 +9,6 @@ userRouter.get(
   protectionMiddleware,
   controller.getUserLocation,
 );
+userRouter.get("/data", protectionMiddleware, controller.getUserData);
 
 module.exports = userRouter;
