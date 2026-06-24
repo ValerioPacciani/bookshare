@@ -1,7 +1,15 @@
+import { useState } from "react";
 import Navbar from "../components/Navbar";
 import { Trash2, SquarePen } from "lucide-react";
 
 const Profile = () => {
+
+  const [profileData, setProfileData] = useState({});
+
+
+
+
+
   return (
     <div>
       <Navbar></Navbar>
@@ -37,8 +45,11 @@ const Profile = () => {
         </div>
 
         <div className=" bg-slate-100 p-4 mt-6 flex flex-col pr-4 h-96 col-span-3 border-gray-600 border rounded-xl mr-4">
-          <div className="flex flex-col gap-3 p-5 bg-slate-200 border border-gray-700 rounded-xl">
-            <div className="flex flex-row  items-center">
+          <div className="flex flex-col gap-3 p-5 bg-slate-200 border border-gray-700 rounded-xl relative">
+            <div className="flex flex-row  items-center ">
+              <div className="text-sm font-light absolute left-1/2 top-0">
+                <p>Personal detail</p>
+              </div>
               <div className="text-lg font-bold w-32 ">
                 <h1>Name :</h1>
               </div>
@@ -47,7 +58,7 @@ const Profile = () => {
               </div>
             </div>
             <div className="flex flex-row items-center">
-              <div className="text-lg font-bold ">
+              <div className="text-lg font-bold  w-32">
                 <h1>Surname :</h1>
               </div>
               <div>
@@ -55,7 +66,7 @@ const Profile = () => {
               </div>
             </div>
             <div className="flex flex-row items-center">
-              <div className="text-lg font-bold ">
+              <div className="text-lg font-bold  w-32">
                 <h1>Email :</h1>
               </div>
               <div>
@@ -63,17 +74,13 @@ const Profile = () => {
               </div>
             </div>
           </div>
+          {/* Books Statistics section */}
 
-          <div>
-            statistiche libri
-            <br></br>
-            statische preferiti
-          </div>
           <div>statistiche prestiti</div>
           <div>trustiness</div>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 
