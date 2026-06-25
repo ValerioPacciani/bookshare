@@ -16,11 +16,14 @@ const getLoans = async (req, res) => {
 }
 
 const createLoan = async (req, res) => {
+
     try {
+        console.log("req.params.id:", req.params.id)
         const senderId = req.user._id //l user di sessione
         const requestedBook = await Book.findById(req.params.id) //trovo il libro con l'id
         const ownerId = requestedBook.owner;
         if (!requestedBook) {
+            console.log("libro non esistente")
             return res.status(404).json({ message: "id del libro non esistente" })
         } else {
 
@@ -30,8 +33,10 @@ const createLoan = async (req, res) => {
                 bookId: req.params.id
             })
             if (ex) { // controllo duplicati
+                console.log("richiesta gia presente")
                 return res.status(400).json({ message: "la Richiesta è gia presente" });
             }
+            console.log("req.params.id:", req.params.id)
             if (requestedBook.isOnShare) { //controllo se il libro è in richiesta
 
 
@@ -57,6 +62,7 @@ const createLoan = async (req, res) => {
 }
 
 const getLoansReceived = async (req, res) => {
+
     try {
         const ownerId = req.user._id
         const loansRecievied = await Loan.find({
@@ -72,11 +78,37 @@ const getLoansReceived = async (req, res) => {
     }
 }
 
+const updateLoanStatus = async (req, res) => {
+    try {
+        const acceptedStatus = ["accepted", "refused", "returned"];
+        const statusTo = req.body.status;
+        const loanId = req.params.id;
+
+        if (!acceptedStatus.includes(statusTo)) {
+            return res.status(400).json({ message: "status non valido" })
+        }
+
+        const loanUpdate = await Loan.findOneAndUpdate(
+            { _id: loanId },
+            { status: statusTo },
+            { new: true } //that's the return of the function, so i can return the new document
+        )
+        return res.status(200).json(loanUpdate);
+
+    } catch (e) {
+        return res.status(500).json({ message: "server error" })
+        console.log("message:", e.error);
+    }
+
+
+}
+
 //TODO deleteLoan
 
 
 module.exports = {
     getLoans,
     createLoan,
-    getLoansReceived
+    getLoansReceived,
+    updateLoanStatus
 }

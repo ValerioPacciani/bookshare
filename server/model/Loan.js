@@ -13,13 +13,13 @@ const loanSchema = new mongoose.Schema({
     },
     bookId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+        ref: "Book",
         required: true
     },
 
     status: {
         type: String,
-        enum: ["pending", "accepted", "refused"],
+        enum: ["pending", "accepted", "refused", "returned"],
         default: "pending",
         required: true
     }

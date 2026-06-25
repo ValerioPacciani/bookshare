@@ -12,4 +12,6 @@ LoanRouter.get("/recevied", protectionMiddleware, controller.getLoansReceived);
 
 LoanRouter.post("/:id", protectionMiddleware, controller.createLoan); //bookID (l' user lo prendo da quello)
 
+LoanRouter.put("/update/:id", protectionMiddleware, controller.updateLoanStatus);
+
 module.exports = LoanRouter;

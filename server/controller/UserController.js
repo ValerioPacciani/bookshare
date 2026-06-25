@@ -22,7 +22,7 @@ const getUserData = async (req, res) => {
       return res.status(404).json({ message: "utente inesistente" });
     }
     const user = await User.findById(userId);
-    console.log(user);
+    //console.log(user);
     return res.status(200).json(user);
   } catch (e) {
     return res

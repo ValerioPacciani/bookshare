@@ -2,40 +2,39 @@ import { useEffect, useState } from "react";
 import axiosClient from "../api/axiosConfig";
 
 const Requests = () => {
-  const [requests, setRequests] = useState([]);
+  const [sendRequests, setSendRequests] = useState([]);
+  const [incomingRequests, setIncomingRequests] = useState([]);
 
-  async function fetch() {
-    const resp = await axiosClient.get("/api/loans/");
-    console.log("array delle richieste:", resp.data);
-    setRequests(resp.data);
+  async function fetchreq() {
+    const resps = await axiosClient.get("/api/loans/");
+    const respi = await axiosClient.get("/api/loans/recevied");
+
+    setSendRequests(resps.data);
+    setIncomingRequests(respi.data);
   }
   useEffect(() => {
-    fetch();
+    fetchreq();
   }, []);
+
+  console.log("richieste mandate: ", sendRequests);
+  console.log("richieste in arrivo: ", incomingRequests);
 
   return (
     <div>
-      <table className="w-full">
-        <thead>
-          <tr>
-            <th>copertina</th>
-            <th>Da</th>
-            <th>titolo</th>
-          </tr>
-          {requests.map(
-            (
-              request, //key is the way react tell the component exist, so it is relly important
-            ) => (
-              <tr key={request._id}>
-                <td>
-                  <p> Da {request.senderId.name} </p>
-                </td>
-                <td></td>
-              </tr> //key is the way react tell the component exist, so it is relly important
-            ),
-          )}
-        </thead>
-      </table>
+      inviate
+      {sendRequests.map((sendrequest) =>
+        <div className="flex flex-row justify-between items-center" key={sendrequest._id}>
+
+          <div>
+            <p>da {sendrequest.ownerId.name} </p>
+          </div>
+          <div>
+            <p>per {sendrequest.senderId.name}</p>
+          </div>
+
+          <div><p>chiede {sendrequest.bookId.title}</p></div>
+        </div>)}
+
     </div>
   );
 };

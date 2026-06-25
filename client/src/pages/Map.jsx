@@ -40,8 +40,9 @@ const Map = () => {
 
   async function onRequestLoan(bookId) {
     try {
-      const resp = axiosClient.post("api/loans/" + bookId)
+      const resp = await axiosClient.post("api/loans/" + bookId)
       console.log(resp.data)
+      //TODO: questa deve essere possibile da fare solo una volta, se la richiesta è gia presente non dovrebbe essere chiamata
     } catch (error) {
       console.log(error.message);
     }
