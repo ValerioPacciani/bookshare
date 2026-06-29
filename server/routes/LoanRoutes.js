@@ -14,4 +14,6 @@ LoanRouter.post("/:id", protectionMiddleware, controller.createLoan); //bookID (
 
 LoanRouter.put("/update/:id", protectionMiddleware, controller.updateLoanStatus);
 
+LoanRouter.delete("/delete/:id", protectionMiddleware, controller.deleteLoan);
+
 module.exports = LoanRouter;

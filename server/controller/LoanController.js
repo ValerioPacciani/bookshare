@@ -103,12 +103,28 @@ const updateLoanStatus = async (req, res) => {
 
 }
 
-//TODO deleteLoan
+const deleteLoan = async (req, res) => {
+    try {
+        const requestId = req.params.id
+        if (!requestId) {
+            return res.status(400).json({ message: "Id della richiesta non esistente" })
+        }
+        const delLoan = await Loan.findOneAndDelete({
+            _id: requestId
+        })
+        return res.status(200).json(delLoan)
+    } catch (e) {
+        console.log("message:", e.error);
+        return res.status(500).json({ message: "server error" })
+
+    }
+}
 
 
 module.exports = {
     getLoans,
     createLoan,
     getLoansReceived,
-    updateLoanStatus
+    updateLoanStatus,
+    deleteLoan
 }

@@ -1,10 +1,33 @@
 import { useEffect, useState } from "react";
 import axiosClient from "../api/axiosConfig";
 import Navbar from "../components/Navbar";
+import { Trash2, Check } from "lucide-react";
 
 const Requests = () => {
   const [sendRequests, setSendRequests] = useState([]);
   const [incomingRequests, setIncomingRequests] = useState([]);
+  const [buttonclicked, setButtonClicked] = useState(false);
+
+  async function updateLoanRequest(requestId) {
+    try {
+      const resp = await axiosClient.put("/api/loans/update/" + requestId, { status: "accepted" })
+      setButtonClicked(prev => !prev);
+    } catch (e) {
+      console.log("errore nell aggiornamento della richiesta")
+    }
+  }
+
+
+
+  async function deleteSendedRequest(requestId) {
+    try {
+      const dresp = await axiosClient.delete("/api/loans/delete/" + requestId);
+      setButtonClicked(prev => !prev);
+    } catch (e) {
+      console.log("errore nella cancellazione della richiesta:", e.message);
+    }
+
+  }
 
   async function fetchreq() {
     const resps = await axiosClient.get("/api/loans/");
@@ -15,7 +38,7 @@ const Requests = () => {
   }
   useEffect(() => {
     fetchreq();
-  }, []);
+  }, [buttonclicked]);
 
   console.log("richieste mandate: ", sendRequests);
   console.log("richieste in arrivo: ", incomingRequests);
@@ -38,7 +61,7 @@ const Requests = () => {
 
             <div><p>chiede {sendrequest.bookId.title}</p></div>
             <div className="flex flex-row gap-6">
-              <button className="bg-red-400 border border-red-900 rounded-md p-1">Delete</button>
+              <button onClick={() => deleteSendedRequest(sendrequest._id)} className="flex items-center pr-3 bg-red-400 border border-red-900 rounded-md p-1 text-sm font-light text-red-800"> <Trash2></Trash2>Refuse</button>
             </div>
           </div>)}
 
@@ -57,10 +80,11 @@ const Requests = () => {
 
             <div><p>chiede {increquest.bookId.title}</p></div>
             <div className="flex flex-row gap-6">
-              <button className="bg-green-400 border border-green-900 rounded-md p-1">
-                accept
+              <button onClick={() => updateLoanRequest(increquest._id)} className="flex items-center pr-3 bg-green-400 border border-green-900 rounded-md p-1 text-sm text-green-800 font-light">
+                <Check></Check>
+                Accept
               </button>
-              <button className="bg-red-400 border border-red-900 rounded-md p-1">refuse</button>
+              <button onClick={() => deleteSendedRequest(increquest._id)} className="flex items-center pr-3 bg-red-400 border border-red-900 rounded-md p-1 text-sm font-light text-red-800"> <Trash2></Trash2>Refuse</button>
             </div>
           </div>)}
       </div>
