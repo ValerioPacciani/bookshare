@@ -9,10 +9,12 @@ LoanRouter.get("/", protectionMiddleware, controller.getLoans);
 
 LoanRouter.get("/recevied", protectionMiddleware, controller.getLoansReceived);
 
+LoanRouter.put("/confirm/:id",protectionMiddleware,controller.confirmLoan);
 
-LoanRouter.post("/:id", protectionMiddleware, controller.createLoan); //bookID (l' user lo prendo da quello)
 
 LoanRouter.put("/update/:id", protectionMiddleware, controller.updateLoanStatus);
+
+LoanRouter.post("/:id", protectionMiddleware, controller.createLoan); //bookID (l' user lo prendo da quello)
 
 LoanRouter.delete("/delete/:id", protectionMiddleware, controller.deleteLoan);
 

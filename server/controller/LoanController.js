@@ -103,6 +103,47 @@ const updateLoanStatus = async (req, res) => {
 
 }
 
+const confirmLoan = async (req,res) => {
+    const requestId = req.params.id
+    const userId = req.user._id
+    if(!requestId) {
+        console.log(requestId, "  " +userId)
+        return res.status(500).json({message : "loan non trovata/indefinita"})
+    }
+    if(!userId) {
+        console.log(requestId, "  " +userId)
+        return res.status(500).json({message: "utente non definito"})
+    } else {
+        try {
+            //capisco chi ha lanciato la conferma dal frontend utilizzando req.user._id e confrontandolo con il valore all'interno della loan
+            const loan = await Loan.findById(requestId)
+            if(loan.ownerId.toString() === userId.toString() ){
+                loan.confirmedByReciever = true;
+                await loan.save();
+            } else if (loan.senderId.toString() === userId.toString()) {
+                loan.confirmedBySender = true;
+                await loan.save();
+            }
+            if (loan.confirmedByReciever && loan.confirmedBySender) {
+                loan.status ="returned";
+                await loan.save();
+                return res.status(200).json({message: "loan aggiornata con successo, entrambi gli attori hanno confermato"})
+
+            } else {
+                return res.status(200).json({message: "loan aggiurnata con successo"})
+            }
+
+           
+
+        }catch (e){
+            console.log(e.error)
+        return res.status(500).json({message: e.error})
+        }
+    }
+
+
+} 
+
 const deleteLoan = async (req, res) => {
     try {
         const requestId = req.params.id
@@ -126,5 +167,6 @@ module.exports = {
     createLoan,
     getLoansReceived,
     updateLoanStatus,
-    deleteLoan
+    deleteLoan,
+    confirmLoan
 }
