@@ -1,1 +1,21 @@
 @import "tailwindcss";
+
+
+
+
+/*reset of Leaflet popups Markers*/
+.popup-custom .leaflet-popup-content-wrapper {
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+
+
+.popup-custom .leaflet-popup-content {
+    margin: 0 !important;
+}
+
+
+.popup-custom .leaflet-popup-tip-container {
+    display: none !important;
+}

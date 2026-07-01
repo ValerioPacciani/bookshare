@@ -160,7 +160,7 @@ const getNearBooks = async (req, res) => {
             type: "Point",
             coordinates: [parseFloat(long), parseFloat(lat)], //rember is lon firs and lat after
           },
-          $maxDistance: parseFloat(radius),
+          $maxDistance: parseFloat(radius), //radius of the research 
         },
       },
     });

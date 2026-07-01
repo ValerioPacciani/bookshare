@@ -3,6 +3,8 @@ import { TileLayer } from "react-leaflet/TileLayer";
 import { useMap } from "react-leaflet/hooks";
 import { Marker } from "react-leaflet/Marker";
 import { Popup } from "react-leaflet/Popup";
+import { renderToStaticMarkup } from 'react-dom/server';
+import L from 'leaflet';
 import { useState } from "react";
 import { useEffect } from "react";
 import axiosClient from "../api/axiosConfig";
@@ -10,29 +12,38 @@ import Bookcard from "../components/Bookcard";
 import Navbar from "../components/Navbar";
 import { divIcon } from "leaflet";
 
-const UserIcon = divIcon({
-  html: ` <div style="background-color: red; border: 2px solid; border-radius:8px ;border-color:black;weight: 10px:height: 10px">
-	ciao
-</div> `,
-  className: "",
-  iconSize: [60, 70],
-  iconAnchor: [30, 70]
+var greenIcon = new L.Icon({
+  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+});
 
 
-})
+
+
+
 
 const Map = () => {
   const [userPosition, setUserPosition] = useState([]);
   const [nearUsers, setNearUsers] = useState([]);
+  const [activeUser, setActiveUser] = useState(null);
   const [sharedBooks, setSharedBooks] = useState([]);
   const [ready, setReady] = useState(false);
   const [radius, setRadius] = useState(parseInt(10000));
 
+
+
+
   async function onMarkerClicked(id) {
     try {
       const resp = await axiosClient.get("/api/books/onShare/" + id); //id dell'utente che ho clickato
+      const aUser = nearUsers.filter((user) => user._id.toString() === id.toString());
+      setActiveUser(aUser[0]);
       setSharedBooks(resp.data);
-      console.log("sharedBooks", sharedBooks);
+      //console.log("sharedBooks", sharedBooks);
     } catch (error) {
       console.log("errore nel fetch dei libri dell utente", id);
     }
@@ -96,28 +107,52 @@ const Map = () => {
         </Navbar>
         <MapContainer
           center={userPosition}
-          zoom={20}
+          zoom={16}
           style={{ height: "500px" }}
         >
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-          {nearUsers.map((u) => (
-            <Marker
-              eventHandlers={{ click: () => onMarkerClicked(u._id) }}
+          {nearUsers.map((u) => {
+            console.log("utente", u.name)
+            console.log("avatar", u.avatar)
+
+            return (<Marker
+              eventHandlers={{
+                click: () => onMarkerClicked(u._id),
+                mouseover: (e) => { e.target.openPopup(); },
+                mouseout: (e) => { e.target.closePopup(); }
+              }}
+
               key={u._id}
-              position={[u.location.coordinates[0], u.location.coordinates[1]]}
-            ></Marker>
-          ))}
+              position={[u.location.coordinates[0], u.location.coordinates[1]]}>
+              <Popup closeButton={false} autoPan={false} className="popup-custom">
+                <div className="flex flex-col items-center justify-center">
+                  {u.display_name}
+                  <div className="flex items-center justify-center border border-black rounded-full h-12 w-12 overflow-hidden">
+                    <img src={u?.avatar}>
+                    </img>
+                  </div>
+                </div>
+              </Popup>
+            </Marker>)
+          })}
           <Marker position={userPosition}
-            interactive={false}
-            icon={UserIcon}>
-            <Popup>
-              Your Position
+
+
+            icon={greenIcon}
+            eventHandlers={{
+              mouseover: (e) => { e.target.openPopup(); },
+              mouseout: (e) => { e.target.closePopup(); }
+            }}>
+            <Popup closeButton={false} autoPan={false} className="popup-custom">
+              <div className="flex flex-col items-center justify-center">
+                You
+              </div>
             </Popup>
           </Marker>
         </MapContainer>
         <div className="grid grid-cols-4 gap-2 bg-gray-200">
           <div>
-            avatar
+            <img src={activeUser?.avatar}></img>
           </div>
           <div className="col-span-3 grid lg:grid-cols-6 md:grid-cols-4 sm:grid-cols-2">
             {sharedBooks.map((book) => (
