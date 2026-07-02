@@ -11,6 +11,7 @@ import axiosClient from "../api/axiosConfig";
 import Bookcard from "../components/Bookcard";
 import Navbar from "../components/Navbar";
 import { divIcon } from "leaflet";
+import BottomBar from "../components/BottomBar";
 
 var greenIcon = new L.Icon({
   iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
@@ -33,6 +34,7 @@ const Map = () => {
   const [sharedBooks, setSharedBooks] = useState([]);
   const [ready, setReady] = useState(false);
   const [radius, setRadius] = useState(parseInt(10000));
+  const [isActive,setIsActive] = useState(false);
 
 
 
@@ -43,6 +45,7 @@ const Map = () => {
       const aUser = nearUsers.filter((user) => user._id.toString() === id.toString());
       setActiveUser(aUser[0]);
       setSharedBooks(resp.data);
+      setIsActive(prev => !prev);
       //console.log("sharedBooks", sharedBooks);
     } catch (error) {
       console.log("errore nel fetch dei libri dell utente", id);
@@ -102,13 +105,13 @@ const Map = () => {
   } else {
     return (
 
-      <div>
+      <div className=" relative flex-flex-col h-screen overflow-hidden">
         <Navbar>
         </Navbar>
         <MapContainer
           center={userPosition}
           zoom={16}
-          style={{ height: "500px" }}
+          style={{ height: "100% ", }}
         >
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
           {nearUsers.map((u) => {
@@ -150,20 +153,9 @@ const Map = () => {
             </Popup>
           </Marker>
         </MapContainer>
-        <div className="grid grid-cols-4 gap-2 bg-gray-200">
-          <div>
-            <img src={activeUser?.avatar}></img>
-          </div>
-          <div className="col-span-3 grid lg:grid-cols-6 md:grid-cols-4 sm:grid-cols-2">
-            {sharedBooks.map((book) => (
-              <Bookcard className="mx-2" key={book._id} id={book._id} onRequestLoan={onRequestLoan} size={"small"} mode={"request"} title={book.title} author={book.author} isbn={book.isbn} coverImage={book?.coverImage}>
-
-              </Bookcard>
-            ))}
-          </div>
-
-        </div>
+        <BottomBar sharedBooks = {sharedBooks} isActive = {isActive}></BottomBar>
       </div>
+      
     );
   }
 };

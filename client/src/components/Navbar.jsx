@@ -35,7 +35,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <div className="flex flex-row h-12  bg-gray-200 space-x-5 items-center ">
+    <div className=" sticky top-0 flex flex-row h-12  bg-gray-200 space-x-5 items-center z-2000">
       <div className="w-36 items-center ml-2">
         <Link to="/">
           <BookOpen></BookOpen>
