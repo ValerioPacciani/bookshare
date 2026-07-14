@@ -12,7 +12,8 @@ const generateToken = (id) => {
 
 const registerUser = async (req, res) => {
     try {
-        const { name, email, password } = req.body; //prendo i dati dal body della richiesta
+        
+        const { name, email, password, long, lat } = req.body; //prendo i dati dal body della richiesta
         //validazione campi
         if (!name || !email || !password) {
             return res.status(400).json({ message: 'tutti i campi sono obbligatori!' }); //ritorno perchè cosi inpedisco di eseguire le istruzioni successive
@@ -21,6 +22,7 @@ const registerUser = async (req, res) => {
         //validazione per duplicati
         if (AlreadyUser) {
             return res.status(400).json({ message: 'Email gia registrata' });
+            //TODO gestire nel frontend
         }
         //creazione password criptata
         const salt = await bycript.genSalt(10); //genera un sale, più è alto più è sicuro ma più è lento
@@ -29,18 +31,23 @@ const registerUser = async (req, res) => {
         const user = await User.create({
             name,
             email,
-            password: hashedPassword //non salvo mai la password in chiaro, privacy by design
+            password: hashedPassword, //non salvo mai la password in chiaro, privacy by design
+            location: {
+            type: "Point",
+            coordinates: [lat, long] // this apparently work, i probably switched some location during the code in the frontend, but i dont know where, so keep as it is
+  }
         });
         //ritorno token e utente
         res.status(201).json({
             _id: user._id,
-            name: user.name,
-            email: user.email,
+            //name: user.name,
+            //email: user.email,
             token: generateToken(user._id)
         })
 
 
     } catch (error) {
+        console.log(error)
         res.status(500).json({ message: 'Server error' }, error = error.message);
     }
 }

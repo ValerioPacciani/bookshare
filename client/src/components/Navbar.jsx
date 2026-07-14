@@ -43,7 +43,7 @@ const Navbar = () => {
       </div>
       <div className="flex-1 items-center">
         <p className="italic">
-          {Greeting()}, {profileData?.display_name}
+          {Greeting()}, {profileData.display_name ? profileData.display_name : profileData.name }
         </p>
       </div>
       <div className=" flex flex-row space-x-4 mr-4">

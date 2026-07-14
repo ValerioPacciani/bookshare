@@ -19,7 +19,7 @@ return (  <div className={` "z-2000 w-full w-max-7xl h-auto min-h-65 absolute bo
 
         <div className="grid grid-cols-4 gap-2 bg-gray-200">
             <div>
-                <img>{activeUser?.avatar}</img>
+              
             </div>
           
           <div className="col-span-3 grid lg:grid-cols-6 md:grid-cols-4 sm:grid-cols-2">
