@@ -153,7 +153,7 @@ const Map = () => {
             </Popup>
           </Marker>
         </MapContainer>
-        <BottomBar sharedBooks = {sharedBooks} isActive = {isActive}></BottomBar>
+        <BottomBar sharedBooks = {sharedBooks} isActive = {isActive} activeUser= {activeUser}></BottomBar>
       </div>
       
     );

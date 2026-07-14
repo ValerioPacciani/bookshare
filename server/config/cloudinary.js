@@ -1,4 +1,4 @@
-//cloudinary connection forstroing images, this file is pasted from the docs of couldinary, is the connection configurations
+//cloudinary connection for  images, this file is pasted from the docs of couldinary, is the connection configurations
 const cloudinary = require("cloudinary").v2;
 
 const connectCloudinary = () => {

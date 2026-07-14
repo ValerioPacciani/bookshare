@@ -34,7 +34,7 @@ const NewBookModal = ({ onclose }) => {
         const resp = await axiosClient.post('/api/books', fData);
 
         console.log(resp);
-        Navigate("/")
+        Navigate("/") //ritorno alla home dopo aver inviato il nuovo libro
 
     }   catch (error) {
             console.error(error.response.data.message);
