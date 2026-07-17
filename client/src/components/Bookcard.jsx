@@ -1,4 +1,5 @@
 const Bookcard = ({ title, author, onRequestLoan, coverImage, isbn, size, mode, id }) => {
+  //console.log("Bookcard onrequestLona -> ", onRequestLoan);
   const isSmall = size === "small";
   // Mantengo esattamente le tue classi di grandezza originarie
   const size_classes = isSmall ? "h-48 w-32" : "h-80 w-48";

@@ -3,8 +3,11 @@
 import Bookcard from "./Bookcard";
 const BottomBar = (props) =>  {
 
+//console.log("BottomBar OnRequestLoan-> ", props.onRequestLoan)
+
 const sharedBooks = props.sharedBooks;
 const activeUser = props.activeUser;
+const onRequestLoan = props.onRequestLoan;
 
 
 const isActive = props.isActive;
@@ -24,7 +27,7 @@ return (  <div className={` "z-2000 w-full w-max-7xl h-auto min-h-65 absolute bo
           
           <div className="col-span-3 grid lg:grid-cols-6 md:grid-cols-4 sm:grid-cols-2">
             {sharedBooks.map((book) => (
-              <Bookcard className="mx-2" key={book._id} id={book._id}  size={"small"} mode={"request"} title={book.title} author={book.author} isbn={book.isbn} coverImage={book?.coverImage}>
+              <Bookcard className="mx-2" onRequestLoan = {onRequestLoan} key={book._id} id={book._id}  size={"small"} mode={"request"} title={book.title} author={book.author} isbn={book.isbn} coverImage={book?.coverImage}>
               </Bookcard>
             ))}
           </div>

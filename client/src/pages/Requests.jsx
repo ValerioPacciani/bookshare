@@ -203,7 +203,7 @@ const Requests = () => {
             </div>
 
             <div className="col-span-2">
-              <p>Asking : "{increquest.bookId.title}"</p>
+              <p>Asking : "{increquest.bookId?.title}"</p>
             </div>
             <div className="flex flex-row gap-6">
               <button
