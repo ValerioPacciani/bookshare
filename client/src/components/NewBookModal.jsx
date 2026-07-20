@@ -1,14 +1,16 @@
 import { useState } from "react";
 import { X, CirclePlus } from "lucide-react"
 import axiosClient from "../api/axiosConfig";
-import { Navigate } from "react-router-dom";
+
 
 //TODO ISBN E CATEGORIE
-const NewBookModal = ({ onclose }) => {
+const NewBookModal = ({ onclose , onBookAdded}) => {
     const [title, setTitle] = useState("");
+    const [isbn,setIsbn] = useState("");
     const [author, setAuthor] = useState("");
     const [file, setFile] = useState(null); //img
-
+    
+   
     const handleTitle = (e) => {
         setTitle(e.target.value);
     }
@@ -20,6 +22,9 @@ const NewBookModal = ({ onclose }) => {
         setFile(e.target.files[0])
 
     }
+    const handleIsbn = (e) => {
+        setIsbn(e.target.value)
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -27,17 +32,25 @@ const NewBookModal = ({ onclose }) => {
         const fData = new FormData()
         fData.append("title", title);
         fData.append("author", author);
+        fData.append("isbn",isbn)
         fData.append("coverImage", file); 
-        console.log("dati pronti: " +title + author + file)
+        //console.log("dati pronti: " +title + author + file)
+
+
         //invio al backand
        try {
         const resp = await axiosClient.post('/api/books', fData);
+            //se la chiamata va a buon fine, allora mandiamo i dati al parent home
+            if (onBookAdded) {
+                    onBookAdded(resp.data); 
+            }
 
-        console.log(resp);
-        Navigate("/") //ritorno alla home dopo aver inviato il nuovo libro
+        //console.log(resp);
+        
 
     }   catch (error) {
             console.error(error.response.data.message);
+            Navigate("/") //ritorno alla home dopo aver inviato il nuovo libro
     }
 
     }
@@ -60,6 +73,11 @@ const NewBookModal = ({ onclose }) => {
                         <div className="w-full">
                             <p className="text-center">Author</p>
                             <input className="border-2 border-gray-600 rounded-sm w-full" value={author} onChange={handleAuthor}></input>
+                        </div>
+                        
+                        <div className="w-full">
+                            <p className="text-center">ISBN</p>
+                            <input className="border-2 border-gray-600 rounded-sm w-full" value={isbn} onChange={handleIsbn}></input>
                         </div>
                         <div className=" mt-3">
                             {/* nascondo il vero input, per applicargli della grafica */}

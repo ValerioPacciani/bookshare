@@ -13,13 +13,17 @@ const Home = () => {
   const [loading, setLoading] = useState(true); //lo stato della pagina, setta a false quando ho finito di montare i componenti
   const [showmodal, setmodal] = useState(false);
 
-  //TODO: Add booksmodal non ricarica la pagina e rimane stucked
+  //funzione di aggiornamento dei libri, prende newbook da newbookmodal
+  const handleBookAdded = (newBook) => {
+    setBooks((prevBooks) => [...prevBooks, newBook]);
+    setmodal(false); // Chiude il modale solo a invio riuscito
+  };
 
   useEffect(() => {
     //questa è il fetch dei libri dell utente, devo farlo via async, perchè axios lo richiede, quindi sono costretto a creare l arrowfunction fetchRESP e chiamrla subido dopo
     const fetchResp = async () => {
       const resp = await axiosClient.get("/api/books");
-      console.log("risposta dal server:", resp.data)
+     //console.log("risposta dal server:", resp.data)
       setBooks(resp.data);
       setLoading(false);
     };
@@ -32,10 +36,9 @@ const Home = () => {
       <div className="flex flex-row bg-pink-100 relative min-h-screen">
         <Sidebar />
 
-        {/* Area contenuto principale */}
         <div className="flex-1 p-4 relative">
 
-          {/* Griglia responsive per le card */}
+          {/*Griglia */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
             {//_id and not id because there is the database id
               books.map((b) => (
@@ -65,7 +68,7 @@ const Home = () => {
 
         </div>
 
-        {showmodal && <NewBookModal onclose={() => setmodal(false)} />}
+        {showmodal && <NewBookModal onBookAdded={handleBookAdded} onclose={() => setmodal(false)} />}
       </div>
     </div>
   );
