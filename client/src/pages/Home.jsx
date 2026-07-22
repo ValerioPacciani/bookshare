@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import axiosClient from "../api/axiosConfig";
 import NewBookModal from "../components/NewBookModal";
-import { Plus } from "lucide-react";
+import { Plus,ListChevronsUpDown,LayoutGrid } from "lucide-react";
 import { Link } from "react-router-dom"
 import BookCompactView from "../components/BookCompactView";
 
@@ -38,9 +38,9 @@ const Home = () => {
         <Sidebar />
 
         <div className="flex-1 p-4 relative">
-          <div className = "flex flex-row mb-3">
-            <button onClick = {() => setVisGridType(true)}className="border-slate-500 bg-slate-200 border p-2 rounded-xs hover:bg-slate-400  hover:border-slate-600"> Griglia</button>
-            <button onClick = {() => setVisGridType(false)}className="border-slate-500 bg-slate-200 border p-2 rounded-xs hover:bg-slate-400  hover:border-slate-600">Elenco</button>
+          <div className = "flex flex-row mb-3 gap-0.5">
+            <button onClick = {() => setVisGridType(true)}className="flex gap-2 border-slate-500 bg-slate-200 border p-2 rounded-md hover:bg-slate-400  hover:border-slate-600"> <LayoutGrid/>Griglia </button>
+            <button onClick = {() => setVisGridType(false)}className="flex gap-2 border-slate-500 bg-slate-200 border p-2 rounded-md hover:bg-slate-400  hover:border-slate-600"> <ListChevronsUpDown></ListChevronsUpDown> Elenco </button>
           </div>
 
           {visTypeGrid ? 
