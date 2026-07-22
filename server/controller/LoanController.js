@@ -92,6 +92,7 @@ const updateLoanStatus = async (req, res) => {
             { _id: loanId },
             { status: statusTo },
             { new: true } //that's the return of the function, so i can return the new document
+            
         )
         return res.status(200).json(loanUpdate);
 

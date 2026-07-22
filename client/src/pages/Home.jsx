@@ -7,12 +7,13 @@ import axiosClient from "../api/axiosConfig";
 import NewBookModal from "../components/NewBookModal";
 import { Plus } from "lucide-react";
 import { Link } from "react-router-dom"
+import BookCompactView from "../components/BookCompactView";
 
 const Home = () => {
   const [books, setBooks] = useState([]); //la lista di libri posseduta dall utente, inizia come array vuoto
   const [loading, setLoading] = useState(true); //lo stato della pagina, setta a false quando ho finito di montare i componenti
   const [showmodal, setmodal] = useState(false);
-
+  const [visTypeGrid , setVisGridType] = useState(true) //ho solo due viste, se false è lista se true è grid, non serve complicare
   //funzione di aggiornamento dei libri, prende newbook da newbookmodal
   const handleBookAdded = (newBook) => {
     setBooks((prevBooks) => [...prevBooks, newBook]);
@@ -29,7 +30,7 @@ const Home = () => {
     };
     fetchResp();
   }, []);
-
+  console.log(books)
   return (
     <div className=" min-h-screen">
       <Navbar></Navbar>
@@ -37,8 +38,12 @@ const Home = () => {
         <Sidebar />
 
         <div className="flex-1 p-4 relative">
+          <div className = "flex flex-row mb-3">
+            <button onClick = {() => setVisGridType(true)}className="border-slate-500 bg-slate-200 border p-2 rounded-xs hover:bg-slate-400  hover:border-slate-600"> Griglia</button>
+            <button onClick = {() => setVisGridType(false)}className="border-slate-500 bg-slate-200 border p-2 rounded-xs hover:bg-slate-400  hover:border-slate-600">Elenco</button>
+          </div>
 
-          {/*Griglia */}
+          {visTypeGrid ? 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
             {//_id and not id because there is the database id
               books.map((b) => (
@@ -52,7 +57,19 @@ const Home = () => {
                 </Link>
               ))}
           </div>
-
+          : 
+          <div className="flex flex-col"> 
+          {books.map((b) => (
+                <Link to={`/books/${b._id}`} key={b._id}>
+                  <BookCompactView
+                    title={b.title}
+                    author={b.author}
+                    isOnShare= {b.isOnShare}
+                    isbn = {b.isbn}
+                  />
+                </Link>
+                )) }
+              </div>}
           {/* Bottone fisso in basso a destra */}
           <div className="fixed bottom-6 right-6 group z-50">
             <button

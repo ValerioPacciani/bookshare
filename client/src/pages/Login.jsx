@@ -25,7 +25,7 @@ const Login = () => {
             const postRes = await axiosClient.post('/api/auth/login', { email, password });
             //that is the context login
             login(postRes.data, postRes.data.token);
-            console.log("dati coretti, indirizzamento ad home");
+            //console.log("dati coretti, indirizzamento ad home");
             navigate('/');
 
         } catch (error) {
