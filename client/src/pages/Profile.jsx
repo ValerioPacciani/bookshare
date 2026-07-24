@@ -100,13 +100,13 @@ const Profile = () => {
           <div className=" grid grid-cols-3 mt-10 gap-4">
             <GenericDataCard
               data="Shared books"
-              number="12"
+              number={profileData.loans_recieved}
               color="green"
               icon={<Forward></Forward>}
             ></GenericDataCard>
             <GenericDataCard
               data="Books recieved"
-              number="9"
+              number={profileData.loans_sended}
               color="blue"
               icon={<CornerDownLeft></CornerDownLeft>}
             ></GenericDataCard>

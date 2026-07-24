@@ -21,7 +21,7 @@ const createLoan = async (req, res) => {
         console.log("req.params.id:", req.params.id)
         const senderId = req.user._id //l user di sessione
         const requestedBook = await Book.findById(req.params.id) //trovo il libro con l'id
-        const ownerId = requestedBook.owner;
+        const ownerId = requestedBook.owner; // lutente a cui arriva la loan
         if (!requestedBook) {
             console.log("libro non esistente")
             return res.status(404).json({ message: "id del libro non esistente" })
@@ -45,6 +45,15 @@ const createLoan = async (req, res) => {
                     ownerId,
                     bookId: req.params.id,
                 })
+
+                await User.updateOne(
+                    {_id : senderId},//trovo il sender
+                    {$inc:{loans_sended: +1}} //incremento le loan inviate di 1
+                )
+                 await User.updateOne(
+                    {_id : ownerId},//trovo il destinatario
+                    {$inc:{loans_recieved: +1}} //incremento le loan ricevute di 1
+                )
 
                 return res.status(200).json({ message: "Richiesta di prestito creata con successo" })
 

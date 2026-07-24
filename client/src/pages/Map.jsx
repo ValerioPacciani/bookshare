@@ -33,7 +33,7 @@ const Map = () => {
   const [activeUser, setActiveUser] = useState(null);
   const [sharedBooks, setSharedBooks] = useState([]);
   const [ready, setReady] = useState(false);
-  const [radius, setRadius] = useState(parseInt(10000));
+  const [radius, setRadius] = useState(parseInt(1000000));
   const [isActive,setIsActive] = useState(false);
 
 

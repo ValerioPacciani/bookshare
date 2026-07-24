@@ -35,6 +35,35 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
+    //campi per le loan, per mantenere in memoria uno storico
+    loans_sended:{
+      type: Number,
+      default : 0,
+      min:[0],
+      required: false
+
+    },
+    loans_recieved:{
+      type: Number,
+      default : 0,
+      min:[0],
+      required: false
+
+    },
+    loans_sended_completed:{
+      type: Number,
+      default : 0,
+      min:[0],
+      required: false
+
+    },
+    loans_recieved_completed:{
+      type: Number,
+      default : 0,
+      min:[0],
+      required: false
+
+    },
     //formato GeoJson per la posizione, è standardizzato e permette di fare algoritmi di geolocalizzazione.
     location: {
       type: {

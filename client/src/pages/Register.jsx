@@ -37,15 +37,13 @@ const Register = () => {
           
         (position) => {
         const { latitude, longitude } = position.coords;
-        //setLat(latitude)
-       // setLong(longitude)
         return resolve ({latitude, longitude});
         
         },
         //the function navigator.geolocation.getCurrentPosition has two callbacks, one that return the positon (position) => and one for the errors (error)=>
          (error) => {   
             console.log("errore gestione coordinate")
-            reject(error);
+            return resolve(({latitude:44.037,longitude:12.3355})) //per ora metto le coordinate di rimini, per prova in futuro devo gestire senza coordinate
         
          });
     })
