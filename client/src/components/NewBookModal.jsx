@@ -99,6 +99,9 @@ const NewBookModal = ({possible_types,possible_genres, onclose , onBookAdded}) =
                                         </option> )}
                                 </select>
                         </div>
+                        <div>
+                            <span>aggiungi generi +</span>
+                        </div>
                         <div className=" mt-3">
                             {/* nascondo il vero input, per applicargli della grafica */}
                             <input
