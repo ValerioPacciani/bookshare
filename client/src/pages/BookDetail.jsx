@@ -76,15 +76,15 @@ const BookDetail = () => {
             }
           </div>
           <div className="bg-gray-50 grid place-items-center">
-            <p>{book?.isbn}</p>
+            <p>{book?.isbn}</p> 
           </div>
           <div className="grid grid-cols-2 bg-gray-100">
             <button onClick = {() => setShowModal(true)}
-            className="flex-1 flex items-center justify-center gap-1.5 text-sm  rounded-md py-2 hover:bg-gray-300 border border-gray-400">
+            className="flex-1 flex items-center justify-center gap-1.5 text-sm  rounded-md py-2 hover:bg-gray-300 border border-gray-400 cursor-pointer">
               <SquarePen></SquarePen>Change
             </button>
 
-            <button onClick = {handleDelete} className="flex-1 flex items-center  border border-red-400 justify-center gap-1.5 text-sm bg-red-50 text-red-700 rounded-md py-2 hover:bg-red-300">
+            <button onClick = {handleDelete} className="flex-1 flex items-center  border border-red-400 justify-center gap-1.5 text-sm bg-red-50 text-red-700 rounded-md py-2 hover:bg-red-300 cursor-pointer">
               <Trash2></Trash2>Delete
             </button>
           </div>

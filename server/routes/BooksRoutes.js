@@ -8,7 +8,12 @@ const Book = require("../model/Book");
 
 const BookRouter = express.Router();
 
+//route per le costanti
+BookRouter.get("/costants",controller.getCostants); //in questa non serve protezione o nulla sono solo dati
+
 BookRouter.get("/", protectionMiddleware, controller.getAllBooks);
+
+
 
 //coverImage è il nome del file che deve intercettare, è inportante che sia uguale!
 BookRouter.post(
@@ -17,12 +22,6 @@ BookRouter.post(
   uploadMiddleware.single("coverImage"),
   controller.createBook,
 ); //sui post avro anche l upload per gestire le immagini
-BookRouter.put(
-  "/:id",
-  protectionMiddleware,
-  uploadMiddleware.single("coverImage"),
-  controller.updateBook,
-);
 
 BookRouter.get("/near", protectionMiddleware, controller.getNearBooks);
 BookRouter.get(

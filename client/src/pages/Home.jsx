@@ -14,6 +14,8 @@ const Home = () => {
   const [loading, setLoading] = useState(true); //lo stato della pagina, setta a false quando ho finito di montare i componenti
   const [showmodal, setmodal] = useState(false);
   const [visTypeGrid , setVisGridType] = useState(true) //ho solo due viste, se false è lista se true è grid, non serve complicare
+  const [bookTypes,setBookTypes] = useState([]);
+  const [bookGenres,setBookGenres] = useState([]);
   //funzione di aggiornamento dei libri, prende newbook da newbookmodal
   const handleBookAdded = (newBook) => {
     setBooks((prevBooks) => [...prevBooks, newBook]);
@@ -24,13 +26,20 @@ const Home = () => {
     //questa è il fetch dei libri dell utente, devo farlo via async, perchè axios lo richiede, quindi sono costretto a creare l arrowfunction fetchRESP e chiamrla subido dopo
     const fetchResp = async () => {
       const resp = await axiosClient.get("/api/books");
+      const constantsResp = await axiosClient.get("/api/books/costants");
+      console.log("costants data = " ,constantsResp.data)
+      setBookTypes(constantsResp.data.book_types);
+      setBookGenres(constantsResp.data.genres);
+      
      //console.log("risposta dal server:", resp.data)
       setBooks(resp.data);
       setLoading(false);
     };
     fetchResp();
   }, []);
-  console.log(books)
+  //console.log(books)
+  console.log(bookTypes);
+  console.log(bookGenres);
   return (
     <div className=" min-h-screen">
       <Navbar></Navbar>
@@ -84,8 +93,7 @@ const Home = () => {
           </div>
 
         </div>
-
-        {showmodal && <NewBookModal onBookAdded={handleBookAdded} onclose={() => setmodal(false)} />}
+        {showmodal && <NewBookModal possible_types = {bookTypes} possible_genres = {bookGenres} onBookAdded={handleBookAdded} onclose={() => setmodal(false)} />}
       </div>
     </div>
   );

@@ -4,11 +4,13 @@ import axiosClient from "../api/axiosConfig";
 import { useNavigate } from "react-router-dom";
 
 //TODO ISBN E CATEGORIE
-const NewBookModal = ({ onclose , onBookAdded}) => {
+const NewBookModal = ({possible_types,possible_genres, onclose , onBookAdded}) => {
     const [title, setTitle] = useState("");
     const [isbn,setIsbn] = useState("");
     const [author, setAuthor] = useState("");
     const [file, setFile] = useState(null); //img
+    const [type,setType] = useState("");
+    const [categories,setCategories] = useState([]);
     
    
     const handleTitle = (e) => {
@@ -25,6 +27,10 @@ const NewBookModal = ({ onclose , onBookAdded}) => {
     const handleIsbn = (e) => {
         setIsbn(e.target.value)
     }
+    const handleType = (e) => {
+        console.log(e.target.value)
+        setType(e.target.value)
+    } 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -33,7 +39,9 @@ const NewBookModal = ({ onclose , onBookAdded}) => {
         fData.append("title", title);
         fData.append("author", author);
         fData.append("isbn",isbn)
+        fData.append("book_type",type)
         fData.append("coverImage", file); 
+        
         //console.log("dati pronti: " +title + author + file)
 
 
@@ -46,23 +54,23 @@ const NewBookModal = ({ onclose , onBookAdded}) => {
             }
 
         //console.log(resp);
-        navigate("/")
+        onclose()
 
     }   catch (error) {
             console.error(error.response.data.message);
-            navigate("/") //ritorno alla home dopo aver inviato il nuovo libro
+         onclose()
     }
 
     }
     return (
 
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
-            <div className="bg-white rounded-lg p-6 w-full max-w-md relative gap-2" >
+            <div className="bg-slate-100 rounded-lg p-6 w-full max-w-md relative gap-2" >
                 <button className="rounded-2xl  absolute top-1 right-1" onClick={onclose}>
                     <X className="hover:text-red-600" />
                 </button>
                 <form onSubmit={handleSubmit}>
-                    <div className="flex flex-col items-center justify-center">
+                    <div className="flex flex-col items-center justify-center gap-2">
                         <div>
                             <p className="font-bold mb-2" >Add a new book</p>
                         </div>
@@ -78,6 +86,18 @@ const NewBookModal = ({ onclose , onBookAdded}) => {
                         <div className="w-full">
                             <p className="text-center">ISBN</p>
                             <input className="border-2 border-gray-600 rounded-sm w-full" value={isbn} onChange={handleIsbn}></input>
+                        </div>
+                        <div className="w-full flex flex-col items-center justify-center">
+                            <label htmlFor="typeselect">
+                                <span>Type </span>
+                               
+                            </label>
+                             <select onChange = {handleType} id="typeselect" className="w-full border-2 border-gray-600 rounded-sm">
+                                    {possible_types.map((type, index) =>
+                                    <option key={index} value={type}>
+                                           {type}
+                                        </option> )}
+                                </select>
                         </div>
                         <div className=" mt-3">
                             {/* nascondo il vero input, per applicargli della grafica */}

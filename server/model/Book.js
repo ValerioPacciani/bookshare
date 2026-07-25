@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const {BOOK_GENRES , BOOK_TYPES} = require("../utils/Costant")
 const bookSchema = new mongoose.Schema(
   {
     title: {
@@ -26,7 +27,13 @@ const bookSchema = new mongoose.Schema(
     },
     categories: {
       type: [String],
+      enum:BOOK_GENRES,
       required: false,
+    },
+    book_type:{
+      type: String,
+      enum: BOOK_TYPES,
+      required:false,
     },
     owner: {
       type: mongoose.Schema.Types.ObjectId, //collegamento con l'utente che possiede il libro, è un id di mongodb

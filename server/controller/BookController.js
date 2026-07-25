@@ -1,6 +1,8 @@
+
+
 const Book = require("../model/Book");
 const User = require("../model/User");
-
+const {BOOK_GENRES , BOOK_TYPES} = require("../utils/Costant")
 //STANDARD CREATE;GET;DELETE;UPDATE  BOOKS
 //________________________________________
 const getAllBooks = async (req, res) => {
@@ -31,7 +33,7 @@ const getBookById = async (req, res) => {
 
 const createBook = async (req, res) => {
   try {
-    const { title, author, isbn, categories, isOnShare } = req.body;
+    const { title, author, isbn, categories, isOnShare,book_type } = req.body;
     //Gestisco l immagine con multer e il campo file
     let coverImage = "";
     if (req.file) {
@@ -59,10 +61,12 @@ const createBook = async (req, res) => {
       title, //equivalent to title: title , if the key = value we can shorthands to the key name
       author,
       isbn,
+      book_type,
       coverImage,
       categories,
       owner,
       isOnShare,
+
     });
     res.status(201).json({ message: "Libro creato con successo", book });
   } catch (error) {
@@ -125,7 +129,7 @@ const getBooksOnShare = async (req, res) => {
       owner: userId,
       isOnShare: true,
     });
-    console.log("booksonShare:", booksOnShare);
+    //console.log("booksonShare:", booksOnShare);
     return res.status(200).json(booksOnShare);
   } catch (error) {
     console.log(error.message);
@@ -171,6 +175,23 @@ const getNearBooks = async (req, res) => {
   }
 };
 
+//ENDPOINT FOR COSTANTS
+//__________________________________________________________________________________________
+
+const getCostants = async(req,res) => {
+  try {
+    
+    return res.status(200).json({
+    genres: BOOK_GENRES,
+    book_types: BOOK_TYPES
+    })
+  } catch(e) 
+  {
+    console.log("error", e.message)
+    return res.status(500).json({message: e.message});
+  }
+}
+
 module.exports = {
   getAllBooks,
   getBookById,
@@ -179,4 +200,5 @@ module.exports = {
   updateBook,
   getNearBooks,
   getBooksOnShare,
+  getCostants,
 };
