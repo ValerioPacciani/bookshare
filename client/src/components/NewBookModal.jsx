@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { X, CirclePlus } from "lucide-react"
 import axiosClient from "../api/axiosConfig";
-
+import { useNavigate } from "react-router-dom";
 
 //TODO ISBN E CATEGORIE
 const NewBookModal = ({ onclose , onBookAdded}) => {
@@ -19,7 +19,7 @@ const NewBookModal = ({ onclose , onBookAdded}) => {
     }
 
     const handleFile = (e) => {
-        setFile(e.target.files[0])
+        setFile(e.target.files[0]) //devo farlo in questo modo, il browser gestisce i file come un array
 
     }
     const handleIsbn = (e) => {
@@ -46,11 +46,11 @@ const NewBookModal = ({ onclose , onBookAdded}) => {
             }
 
         //console.log(resp);
-        
+        navigate("/")
 
     }   catch (error) {
             console.error(error.response.data.message);
-            Navigate("/") //ritorno alla home dopo aver inviato il nuovo libro
+            navigate("/") //ritorno alla home dopo aver inviato il nuovo libro
     }
 
     }

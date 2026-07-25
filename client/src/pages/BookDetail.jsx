@@ -5,31 +5,18 @@ import { useEffect } from "react";
 import axiosClient from "../api/axiosConfig";
 import CatField from "../components/CatField";
 import { Trash2, SquarePen, BookUp } from "lucide-react";
+import ModifyBookModal from "../components/ModifyBookModal";
 
 const BookDetail = () => {
   const [book, setBook] = useState();
   const [categories, setCategories] = useState([]);
   const [refresh, setRefresh] = useState(false);
+  const [showModal,setShowModal] = useState(false);
   const navigate = useNavigate();
 
-  const { id } = useParams(); // use param returns an object {id : 31} sop i need to destructure it, {id} so it returns 42
+  const { id } = useParams(); // use param returns an object {id : 31} sop i need to destructure it, {id} so it returns 42 //l?id Del libro
   //TODO: tasto modifica e tasto, togli dalla condivisione
-  async function handleShare() {
-    try {
-      const resShare = await axiosClient.put("/api/books/" + id, {
-        title: book.title,
-        author: book.author,
-        isbn: book.isbn,
-        categories: book.categories,
-        coverImage: book.coverImage,
-        isOnShare: true,
-      });
-      setRefresh((prev) => !prev); //in this case i am changing the value of refresh every time it happen this fuction this is for triggering the Useeffect for fetchiing the data, so i can always have the new datas
-      console.log(resShare);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  
 
   async function handleDelete() {
     try {
@@ -45,6 +32,7 @@ const BookDetail = () => {
         const resbook = await axiosClient.get("/api/books/" + id);
         setBook(resbook.data);
         setCategories(resbook.data.categories);
+        //setRefresh((prev) => !prev) //ciclo infinto
       } catch (error) {
         console.log(error);
       }
@@ -55,8 +43,8 @@ const BookDetail = () => {
     fetchId(id);
   }, [refresh]); //refresh is important here, so the useEffect will be lunchede every time id param changes
 
-  console.log("bookdata", book);
-  console.log("categoriesData : ", categories);
+  //console.log("bookdata", book);
+  //console.log("categoriesData : ", categories);
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -90,23 +78,20 @@ const BookDetail = () => {
           <div className="bg-gray-50 grid place-items-center">
             <p>{book?.isbn}</p>
           </div>
-          <div className="grid grid-cols-3 bg-gray-100">
-            <button className="flex-1 flex items-center justify-center gap-1.5 text-sm border rounded-md py-2 hover:bg-gray-50">
+          <div className="grid grid-cols-2 bg-gray-100">
+            <button onClick = {() => setShowModal(true)}
+            className="flex-1 flex items-center justify-center gap-1.5 text-sm  rounded-md py-2 hover:bg-gray-300 border border-gray-400">
               <SquarePen></SquarePen>Change
             </button>
-            <button
-              onClick={handleShare}
-              className="flex-1 flex items-center justify-center gap-1.5 text-sm bg-blue-50 text-blue-700 rounded-md py-2 hover:bg-blue-100"
-            >
-              <BookUp></BookUp>Share
-            </button>
-            <button className="flex-1 flex items-center justify-center gap-1.5 text-sm bg-red-50 text-red-700 rounded-md py-2 hover:bg-red-100">
+
+            <button onClick = {handleDelete} className="flex-1 flex items-center  border border-red-400 justify-center gap-1.5 text-sm bg-red-50 text-red-700 rounded-md py-2 hover:bg-red-300">
               <Trash2></Trash2>Delete
             </button>
           </div>
         </div>
       </div>
-    </div>
+      {showModal && <ModifyBookModal onClose = {() => setShowModal(false)} onDataSended= {() => {fetchId(id); setShowModal(false)}} cover = {book.coverImage} bookId={id} type = {"tipo"} title = {book.title} author = {book.author} isbn = {book.isbn} onshare = {book.isOnShare}></ModifyBookModal>}
+    </div> 
   );
 };
 

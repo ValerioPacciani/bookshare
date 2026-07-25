@@ -136,8 +136,21 @@ const confirmLoan = async (req,res) => {
             }
             if (loan.confirmedByReciever && loan.confirmedBySender) {
                 loan.status ="returned";
+
+                await User.updateOne ( //update dell user, per mentenre in memoria le loan scambiate
+                    {_id: ownerId},
+                    {$inc : {loans_recieved_completed : +1}}
+                )
+
+                 await User.updateOne ( 
+                    {_id: senderId},
+                    {$inc : {loans_sended_completed : +1}}
+                )
+
                 await loan.save();
                 return res.status(200).json({message: "loan aggiornata con successo, entrambi gli attori hanno confermato"})
+
+                
 
             } else {
                 return res.status(200).json({message: "loan aggiurnata con successo"})
