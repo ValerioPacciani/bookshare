@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import axiosClient from "../api/axiosConfig";
 import NewBookModal from "../components/NewBookModal";
-import { Plus,ListChevronsUpDown,LayoutGrid, ShelvingUnit } from "lucide-react";
+import { Plus,ListChevronsUpDown,LayoutGrid, ShelvingUnit, LibraryBig } from "lucide-react";
 import { Link } from "react-router-dom"
 import BookCompactView from "../components/BookCompactView";
 import Shelf from "../components/Shelf";
@@ -75,7 +75,7 @@ const Home = () => {
           return(
             
             <div>
-              <div className="flex-flex-row gap-1">
+              <div className="flex flex-col gap-1">
                 {shelvesarray.map((type) => ( //ora ho un oggetto del tipo [["type",[book1,book2 etc]],["type2"[book1,book2,book3]]
                   <Shelf key={type[0]} type={type}></Shelf>
                 ))}
@@ -84,6 +84,12 @@ const Home = () => {
               </div>
             </div>
           )
+          case "genreshelves":
+            return(
+              <div>
+                TO Implemnt
+              </div>
+            );
     }
   }
 
@@ -98,7 +104,8 @@ const Home = () => {
 
   //funzione di aggiornamento dei libri, prende newbook da newbookmodal
   const handleBookAdded = (newBook) => {
-    setBooks((prevBooks) => [...prevBooks, newBook]);
+    //l'use state di react in automatico gestisce, nel caso di una funzione di callback lo  stato precedente e lo invia come primo parametro
+    setBooks((prevBooks) => [...prevBooks, newBook]); //aggiorno con il nuovo libro ...array copia l'intero array 
     setmodal(false); // Chiude il modale solo a invio riuscito
   };
 
@@ -127,12 +134,14 @@ const Home = () => {
         <Sidebar />
        
         <div className="flex-1 p-4 relative">
-        <div className="flex flex-row items-center justify-between"> 
+        <div className="flex flex-row items-center"> 
           <div className = "flex flex-row mb-3 gap-0.5">
             <button onClick = {() => setViewType("grid")}className="flex gap-2 border-slate-500 bg-slate-200 border p-2 rounded-md hover:bg-slate-400  hover:border-slate-600 cursor-pointer"> <LayoutGrid/>Griglia </button>
             <button onClick = {() => setViewType("list")}className="flex gap-2 border-slate-500 bg-slate-200 border p-2 rounded-md hover:bg-slate-400  hover:border-slate-600 cursor-pointer"> <ListChevronsUpDown></ListChevronsUpDown> Elenco </button>
+            <button onClick = {() => setViewType("typeshelves")} title ="pass to the shelves view, it uses types or genres to load the books" className="p-2  flex gap-2 border-slate-500 bg-slate-200 border rounded-md hover:bg-slate-400  hover:border-slate-600 cursor-pointer"> <ShelvingUnit /> Type view</button>
+            <button onClick = {() => setViewType("genreshelves")} title ="pass to the shelves view, it uses types or genres to load the books" className="p-2  flex gap-2 border-slate-500 bg-slate-200 border rounded-md hover:bg-slate-400  hover:border-slate-600 cursor-pointer"> <LibraryBig></LibraryBig> Genres view</button>
           </div>
-            <button onClick = {() => setViewType("typeshelves")} title ="pass to the shelves view, it uses types or genres to load the books" className="p-2 mr-20 flex gap-2 border-slate-500 bg-slate-200 border rounded-md hover:bg-slate-400  hover:border-slate-600 cursor-pointer"> <ShelvingUnit /> Shelf view</button>
+           
           </div>
           {renderView(viewType)}
           
