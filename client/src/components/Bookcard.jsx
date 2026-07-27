@@ -6,9 +6,9 @@ const Bookcard = ({ title, author, onRequestLoan, coverImage, isbn, size, mode, 
 
   return (
     <div
-      className={`relative ${size_classes} flex flex-col rounded-xl overflow-hidden border border-gray-600 bg-gray-900 shadow-md group`}
+      className={`relative ${size_classes} shrink-0 flex flex-col rounded-xl overflow-hidden border border-gray-600 bg-gray-900 shadow-md group`}
     >
-      {/*Image container, we used inset-o, it means top-0,bottom-0,right-0, left-0 so it is the same height and wheight of the container */}
+      {/*Image container, I used inset-o, it means top-0,bottom-0,right-0, left-0 so it is the same height and wheight of the container */}
       <img
         className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         src={coverImage}

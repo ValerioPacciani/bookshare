@@ -153,7 +153,7 @@ const Map = () => {
             </Popup>
           </Marker>
         </MapContainer>
-        <BottomBar onRequestLoan = {onRequestLoan} sharedBooks = {sharedBooks} isActive = {isActive} activeUser= {activeUser}></BottomBar>
+        <BottomBar onClose= {() => setIsActive(prev => !prev)}onRequestLoan = {onRequestLoan} sharedBooks = {sharedBooks} isActive = {isActive} activeUser= {activeUser}></BottomBar>
       </div>
       
     );

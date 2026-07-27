@@ -3,8 +3,8 @@
 
 const BOOK_GENRES = [
     "",
-    "Mystery / Crime / Noir",
-    "Thriller / Suspense",
+    "Mystery, Crime and Noir",
+    "Thriller, Suspense",
     "Fantasy",
     "Science Fiction",
     "Horror",
@@ -36,7 +36,7 @@ const BOOK_TYPES = [
     "Novel",
   "Essay",
   "Manual",
-  "Comics / Graphic Novel / Manga",
+  "Comics, Graphic Novel, Manga",
   "Short Story Collection",
   "Biography",
   "Academic",
