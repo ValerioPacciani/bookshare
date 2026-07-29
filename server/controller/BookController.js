@@ -33,8 +33,9 @@ const getBookById = async (req, res) => {
 
 const createBook = async (req, res) => {
   try {
-    const { title, author, isbn, categories, isOnShare,book_type } = req.body;
+    const { title, author, isbn, isOnShare,book_type } = req.body;
     //Gestisco l immagine con multer e il campo file
+    const categories = JSON.parse(req.body.categories)
     let coverImage = "";
     if (req.file) {
       coverImage = req.file.path; //ovvero l url dell immagine contenuta in req.file di multer, non i metadati
@@ -70,7 +71,7 @@ const createBook = async (req, res) => {
     });
     res.status(201).json({ message: "Libro creato con successo", book });
   } catch (error) {
-    console.log("errore di creazione", error);
+    console.log("errore di creazione", error.message);
     res.status(500).json({ message: "Server Error", error: error.message });
   }
 };

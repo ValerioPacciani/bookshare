@@ -16,8 +16,8 @@ const NewBookModal = ({possible_types,possible_genres, onclose , onBookAdded}) =
     const [genresArray,setGenresArray] = useState([])
     
     
-    console.log(possible_genres)
-    console.log(genresArray)
+   // console.log(possible_genres)
+    //console.log(genresArray)
 
     const deleteGenre= (genre) => {
         setGenresArray((prevGenres) =>  //prev è creato in automatico da react, ovvero il valore che è nello stato precendtmente
@@ -64,6 +64,7 @@ const NewBookModal = ({possible_types,possible_genres, onclose , onBookAdded}) =
         fData.append("isbn",isbn)
         fData.append("book_type",type)
         fData.append("coverImage", file); 
+        fData.append("categories",JSON.stringify(genresArray)); //devo farlo cosi, in fase di invio con formdata, viene trasformato utto in stringe, non conosce la array
         
         //console.log("dati pronti: " +title + author + file)
 
@@ -80,8 +81,16 @@ const NewBookModal = ({possible_types,possible_genres, onclose , onBookAdded}) =
         onclose()
 
     }   catch (error) {
-            console.error(error.response.data.message);
-         onclose()
+            
+    // 🔍 STAMPIAMO TUTTO PER INDIVIDUARE L'ERRORE
+    console.error("--- DETTAGLIO ERRORE FRONTEND ---");
+    console.error("Error completo:", error);
+    if (error.response) {
+      console.error("Status:", error.response.status);
+      console.error("Data dal backend:", error.response.data);
+    } else {
+      console.error("Errore di rete / Client:", error.message);
+    }
     }
 
 
