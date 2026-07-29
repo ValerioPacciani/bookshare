@@ -11,7 +11,7 @@ const axiosClient = axios.create({
 axiosClient.interceptors.request.use(config => {
     const token = localStorage.getItem('token');
     if (token) {
-        config.headers.Authorization = 'Bearer ' + token;
+        config.headers.Authorization = 'Bearer ' + token; //se esiste lo inserisce nel formato coretto che si aspetta la chiamata http, ovvero "bearer" + token appunto
     }
     return config;
 }
