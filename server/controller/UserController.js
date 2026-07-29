@@ -31,7 +31,26 @@ const getUserData = async (req, res) => {
   }
 };
 
+
+const getExternalUserData = async(req,res) => {
+  try{  
+    const userId = req.params.id;
+    if (!userId) {
+      return res.status(404).json({message:"utente inesistente"})
+    }
+    const user = await User.findById(userId);
+    console.log(user)
+    return res.status(200).json(user);
+
+  } catch (e)
+  { 
+    console.log(e.message)
+    return res.status(500).json({message: e.message})}
+}
+
+
 module.exports = {
   getUserData,
   getUserLocation,
+  getExternalUserData,
 };

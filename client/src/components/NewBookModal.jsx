@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { X, CirclePlus } from "lucide-react"
+import { X, CirclePlus,Check } from "lucide-react"
 import axiosClient from "../api/axiosConfig";
-import { useNavigate } from "react-router-dom";
+import { generatePath, useNavigate } from "react-router-dom";
+import GenresCointainer from "./GenresContainer";
+
 
 //TODO ISBN E CATEGORIE
 const NewBookModal = ({possible_types,possible_genres, onclose , onBookAdded}) => {
@@ -10,9 +12,30 @@ const NewBookModal = ({possible_types,possible_genres, onclose , onBookAdded}) =
     const [author, setAuthor] = useState("");
     const [file, setFile] = useState(null); //img
     const [type,setType] = useState("");
-    const [categories,setCategories] = useState([]);
+    const [newGenre,setNewGenre] = useState("")
+    const [genresArray,setGenresArray] = useState([])
     
-   
+    
+    console.log(possible_genres)
+    console.log(genresArray)
+
+    const deleteGenre= (genre) => {
+        setGenresArray((prevGenres) =>  //prev è creato in automatico da react, ovvero il valore che è nello stato precendtmente
+        prevGenres.filter((pGen) => pGen!== genre)) //cancelliamo tutto cio che è equivalente a genre
+        
+    }
+
+
+    const  addNewGenre = () => {
+        if(!genresArray.includes(newGenre)) { //evito i duplicati
+        setGenresArray([...genresArray,newGenre])
+        }
+    }
+    
+    const handleNewGenre = (e) => {
+        setNewGenre(e.target.value)
+    } 
+    
     const handleTitle = (e) => {
         setTitle(e.target.value);
     }
@@ -61,6 +84,7 @@ const NewBookModal = ({possible_types,possible_genres, onclose , onBookAdded}) =
          onclose()
     }
 
+
     }
     return (
 
@@ -99,9 +123,21 @@ const NewBookModal = ({possible_types,possible_genres, onclose , onBookAdded}) =
                                         </option> )}
                                 </select>
                         </div>
-                        <div>
-                            <span>aggiungi generi +</span>
+                        <div className="flex items-center justify-center">
+                            <span className="mr-1">Add a genre: </span>
+                            
+                                <div className="flex">
+                                        <select onChange={handleNewGenre} id="genreselect">
+                                            {possible_genres.map((genre,index) =>
+                                            <option key ={genre} value= {genre}>
+                                                {genre}
+                                            </option>)}
+
+                                        </select>
+                                    <span onClick = {()=> addNewGenre() } className="mx-1 hover:text-green-500 cursor-pointer"><Check></Check></span>
+                                </div>
                         </div>
+                        <GenresCointainer genres = {genresArray} sendDelete={deleteGenre}></GenresCointainer>
                         <div className=" mt-3">
                             {/* nascondo il vero input, per applicargli della grafica */}
                             <input
@@ -119,7 +155,7 @@ const NewBookModal = ({possible_types,possible_genres, onclose , onBookAdded}) =
                             </label>
                         </div>
                         <button type="submit" className="rounded-full mt-3">
-                            <CirclePlus className="w-8 h-8 hover:text-green-500" />
+                            <CirclePlus className="w-8 h-8 hover:text-green-500 cursor-pointer" />
                         </button>
 
                     </div>

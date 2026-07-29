@@ -57,14 +57,17 @@ const BookDetail = () => {
           <div className="bg-gray-100 grid place-items-center">
             <p className="text-2xl font-bold ">{book?.title}</p>
           </div>
+           <div className="bg-gray-100 grid place-items-center">
+            <p className="text-sm font-light ">{book?.book_type}</p>
+          </div>
           <div className="bg-gray-50 grid place-items-center">
             {book?.author}
           </div>
-          <div>
+          <div className="flex items-center justify-center">
             {book?.isOnShare ? (
-              <p> Questo libro è in condivisione </p>
+              <p> this book is on Share</p>
             ) : (
-              <p>questo libro non è in condivisione</p>
+              <p>this book is not on share</p>
             )}
           </div>
           <div className="bg-gray-100 flex flex-row justify-center gap-1">

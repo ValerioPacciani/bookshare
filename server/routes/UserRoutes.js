@@ -4,6 +4,10 @@ const protectionMiddleware = require("../middleware/AuthenticationMiddleware");
 
 const userRouter = express.Router();
 
+//for not the active user, but for the external ones
+userRouter.get("/external/data/:id",protectionMiddleware,controller.getExternalUserData)
+
+
 userRouter.get(
   "/userlocation",
   protectionMiddleware,
