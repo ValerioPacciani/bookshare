@@ -23,7 +23,7 @@ const Navbar = () => {
   async function fetchUserData() {
     try {
       const resp = await axiosClient.get("/api/user/data");
-      console.log(resp.data);
+      //console.log(resp.data);
       setProfileData(resp.data);
     } catch (e) {
       console.log("errore nel fetch dei dati dell user: ", e.message);

@@ -1,4 +1,6 @@
-const multer = require("multer"); //Multer è praticamente un traduttore che prende il messagio con l urle dell immagine dal frontend e la inoltra direttamente a cludianry, lo gestisoc con express
+const multer = require("multer"); //Multer è praticamente un traduttore che prende il messagio con l urle dell immagine dal frontend e la inoltra direttamente a cludianry, senza gestisoc con express
+
+//siccome express non puo gestire i file binari creo un nuovo storage su cloudinary, e invio in automatico l immagine presa dal frontend nello storage
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const { cloudinary } = require("../config/cloudinary");
 

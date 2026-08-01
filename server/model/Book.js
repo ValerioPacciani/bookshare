@@ -25,6 +25,13 @@ const bookSchema = new mongoose.Schema(
       required: false,
       default: "",
     },
+    read_percentage:{
+      type: Number,
+      required:false,
+      default:0,
+      min :[0, "il minimo consentito è 0"],
+      max: [100, "il massimo consentito è 100"]
+    },
     categories: {
       type: [String],
       enum:BOOK_GENRES,

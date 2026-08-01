@@ -35,6 +35,38 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
+
+    //campi per le immagini 
+    genres_images:{
+      type:Map,
+      of:String,
+      default:{
+      "Mystery, Crime and Noir": "",
+      "Thriller, Suspense": "",
+      "Fantasy": "",
+      "Science Fiction": "",
+      "Horror": "horror",
+      "Historical Fiction": "",
+      "Romance": "",
+      "Action and Adventure": "",
+      "Contemporary Fiction": "",
+      "Humor and Satire": "",
+      "Computer Science and Tech": "",
+      "Science and Mathematics": "",
+      "History": "",
+      "Philosophy and Psychology": "",
+      "Politics and Sociology": "",
+      "Economics and Business": "",
+      "Self-Help and Personal Growth": "",
+      "Religion and Spirituality": "",
+      "Art, Music and Film": "",
+      "Cooking and Gastronomy": "",
+      "Travel and Guides": "",
+      "Sports and Wellness": "",
+      "Hobbies and Gardening": "",
+      "True Crime": ""
+      }
+    },
     //campi per le loan, per mantenere in memoria uno storico
     loans_sended:{
       type: Number,

@@ -9,6 +9,7 @@ import { Plus,ListChevronsUpDown,LayoutGrid, ShelvingUnit, LibraryBig } from "lu
 import { Link } from "react-router-dom"
 import BookCompactView from "../components/BookCompactView";
 import Shelf from "../components/Shelf";
+import GenreCard from "../components/GenreCard";
 
 
 const Home = () => {
@@ -18,9 +19,25 @@ const Home = () => {
   const [viewType , setViewType] = useState("grid") 
   const [bookTypes,setBookTypes] = useState([]);
   const [bookGenres,setBookGenres] = useState([]);
+  const [displayImage,setDisplayImage] = useState([])
+
+  const[genresToDisplay,setGenresToDisplay] = useState([])
   
 
   console.log("books:" ,books)
+
+
+  //funzione di fetch per i libri
+    const  fetchImage = async () => {
+        try {
+            const resp = await axiosClient.get("/api/user/genres_images")
+            console.log("risposta dla server", resp.data)
+            setDisplayImage(resp.data.genres_images)
+
+        } catch (e) {
+            console.log(e.message)
+        }
+      }
 
   //funzione di switch per il rendering dei componenti a seconda della vista scelta
   const renderView = (viewType) => {
@@ -86,8 +103,12 @@ const Home = () => {
           )
           case "genreshelves":
             return(
-              <div>
-                TO Implemnt
+              <div className="flex gap-8 flex-wrap">
+                {[...genresToDisplay].map((genre) => ( //il ... è per trasforamre un set in un array
+                  <GenreCard key = {genre} image = {displayImage} genre = {genre}>hello</GenreCard>
+                ))}
+                
+                
               </div>
             );
     }
@@ -114,19 +135,49 @@ const Home = () => {
     const fetchResp = async () => {
       const resp = await axiosClient.get("/api/books");
       const constantsResp = await axiosClient.get("/api/books/costants");
-      console.log("costants data = " ,constantsResp.data)
+      
+      //console.log("costants data = " ,constantsResp.data)
       setBookTypes(constantsResp.data.book_types);
       setBookGenres(constantsResp.data.genres);
+      
       
      //console.log("risposta dal server:", resp.data)
       setBooks(resp.data);
       setLoading(false);
     };
     fetchResp();
+    fetchImage();
   }, []);
   //console.log(books)
   //console.log(bookTypes);
-  //console.log(bookGenres);
+  //console.log(bookGenres)
+
+  //use effect per la gestione dei generi
+  useEffect(() => {
+  // Esegui il ciclo solo se ci sono effettivamente dei libri nell'array
+  if (books.length > 0) {
+    const singleGenres = new Set();
+    books.forEach((book) => {
+      if (book.categories) {
+        const genresToRender =  Object.entries(book.categories); //questo conterrà tutti i generi presenti nei libri. quindi poi posso renderizzarli
+        
+          genresToRender.forEach((genre => {
+           singleGenres.add(genre[1])
+            }
+              
+          ))
+        //console.log("genres",singleGenres) 
+      }
+    });
+    setGenresToDisplay(singleGenres); //aggiungo allo stato
+    console.log("top G ",genresToDisplay)
+  }
+}, [books]);
+  
+  
+  
+//componente
+
   return (
     <div className=" min-h-screen">
       <Navbar></Navbar>

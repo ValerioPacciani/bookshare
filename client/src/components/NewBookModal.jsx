@@ -82,15 +82,7 @@ const NewBookModal = ({possible_types,possible_genres, onclose , onBookAdded}) =
 
     }   catch (error) {
             
-    // 🔍 STAMPIAMO TUTTO PER INDIVIDUARE L'ERRORE
-    console.error("--- DETTAGLIO ERRORE FRONTEND ---");
-    console.error("Error completo:", error);
-    if (error.response) {
-      console.error("Status:", error.response.status);
-      console.error("Data dal backend:", error.response.data);
-    } else {
-      console.error("Errore di rete / Client:", error.message);
-    }
+    console.log(error.response.message)
     }
 
 
