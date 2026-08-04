@@ -2,17 +2,28 @@ import { useState } from "react"
 import { useEffect } from "react"
 import axiosClient from "../api/axiosConfig"
 
-const GenreCard = ({genre,image}) => {
+import {SquarePen} from "lucide-react"
 
-console.log("image,url" ,image[genre])
+const GenreCard = ({genre,image, booksByGenre}) => {
+
+
+    const [books,setBooks] = useState([])
+
+
+ //console.log("image,url" ,image[genre])
     //fetch immagini 
+
+    console.log("nel child", booksByGenre)
+
     return (
-        <div className="flex w-80  flex-wrap bg-amber-200 h-64">
-            <img src={image[genre]}>
-            
+       <div className=" relative w-md h-62 bg-amber-100">
+            <img className="z-10 absolute inset-0" src={image[genre]}>
             </img>
-            {genre}
-        </div>
+            <div className=" flex flex-col z-20 pl-5 pt-4 gap-2 font-extrabold text-3xl absolute top-0 left-0 text-white">
+                <span>{genre}</span>
+                <span className="">{booksByGenre.length}</span>
+            </div>
+       </div>
     )
 
 

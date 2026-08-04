@@ -16,17 +16,41 @@ const Home = () => {
   const [books, setBooks] = useState([]); //la lista di libri posseduta dall utente, inizia come array vuoto
   const [loading, setLoading] = useState(true); //lo stato della pagina, setta a false quando ho finito di montare i componenti
   const [showmodal, setmodal] = useState(false);
-  const [viewType , setViewType] = useState("grid") 
+  const [viewType , setViewType] = useState("grid") //tipo di vista per il rendering condizionale
+  //costanti
   const [bookTypes,setBookTypes] = useState([]);
   const [bookGenres,setBookGenres] = useState([]);
+  //stati per il figlio GenreCard
   const [displayImage,setDisplayImage] = useState([])
-
+  const [booksByGenre,setBooksByGenre] = useState([])
   const[genresToDisplay,setGenresToDisplay] = useState([])
   
 
   console.log("books:" ,books)
 
 
+  //funzione che filtra i libri in basi al genere di appartenenza per mandarli all elemento
+    const createBooksByGenre = () => {
+      const booksByCategories = new Map() //creo una mappa per mantenre i libri sarà "genere", "lista dei libri"
+       //controllo se ho il valore
+        for(let i = 0; i <books.length; i++) {  
+          const book = books[i];
+          [...genresToDisplay].map((genre) => {
+            if (!booksByCategories.has(genre)) { //gestione dei duplicati
+              booksByCategories.set(genre, []);
+              }
+            for(let c = 0; c< book.categories.length; c++)
+              if(book.categories[c] === genre) {
+              booksByCategories.get(genre).push({title : book.title, id: book._id}); //torno solo cio che mi serve, se mi serve altro posso modificare direttamente da qua 
+              }
+          })
+            
+
+
+      }
+      setBooksByGenre(booksByCategories) //salvo nello stato
+    }
+    
   //funzione di fetch per i libri
     const  fetchImage = async () => {
         try {
@@ -105,7 +129,7 @@ const Home = () => {
             return(
               <div className="flex gap-8 flex-wrap">
                 {[...genresToDisplay].map((genre) => ( //il ... è per trasforamre un set in un array
-                  <GenreCard key = {genre} image = {displayImage} genre = {genre}>hello</GenreCard>
+                  <GenreCard key = {genre} image = {displayImage} genre = {genre} booksByGenre = {booksByGenre.get(genre)}>hello</GenreCard>
                 ))}
                 
                 
@@ -134,6 +158,8 @@ const Home = () => {
     //questa è il fetch dei libri dell utente, devo farlo via async, perchè axios lo richiede, quindi sono costretto a creare l arrowfunction fetchRESP e chiamrla subido dopo
     const fetchResp = async () => {
       const resp = await axiosClient.get("/api/books");
+
+      //costanti 
       const constantsResp = await axiosClient.get("/api/books/costants");
       
       //console.log("costants data = " ,constantsResp.data)
@@ -147,6 +173,7 @@ const Home = () => {
     };
     fetchResp();
     fetchImage();
+    
   }, []);
   //console.log(books)
   //console.log(bookTypes);
@@ -170,7 +197,9 @@ const Home = () => {
       }
     });
     setGenresToDisplay(singleGenres); //aggiungo allo stato
-    console.log("top G ",genresToDisplay)
+    //console.log("top G ",genresToDisplay)
+    createBooksByGenre();
+    console.log("mappa" ,booksByGenre)
   }
 }, [books]);
   
