@@ -11,6 +11,8 @@ userRouter.get("/genres_images",protectionMiddleware,controller.getGenreImage)
 
 userRouter.post("/genres_images/:genre",protectionMiddleware,imagesMiddleware.single("genre_image"),controller.updateGenresImages)
 
+userRouter.put("/profile_visibility",protectionMiddleware, controller.updateProfileSettings)
+
 userRouter.get(
   "/userlocation",
   protectionMiddleware,

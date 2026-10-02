@@ -96,6 +96,13 @@ const userSchema = new mongoose.Schema(
       required: false
 
     },
+    //gestione del profilo e delle impostazioni di visibilità, tutto a falso , tranne l'email
+    profile_visibility: {
+      bio: {type:Boolean , default:false}, //dati personali (nome, cognome,imagggine del profilo etc...)
+      loans : {type:Boolean,default:false}, //dati dei prestiti (richieste accettate o mandate etc..)
+      books : {type:Boolean,default: false}, //statistiche dei libri (letti, non letti, tipi etc...)
+      external_links: {type:Boolean,default:false} //connessioni aggiuntive
+    },
     //formato GeoJson per la posizione, è standardizzato e permette di fare algoritmi di geolocalizzazione.
     location: {
       type: {

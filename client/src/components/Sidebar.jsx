@@ -36,7 +36,7 @@ const Sidebar = () => {
             </div>
             <div className="flex flex-row space-x-3 p-1 hover:bg-pink-100  ml-4 rounded-l-2xl">
                 <Cog />
-                <Link to={"/"}>Settings</Link>
+                <Link to={"/settings"}>Settings</Link>
             </div>
             <div className="flex flex-row space-x-3 mb-4 p-1 hover:bg-pink-100  ml-4 rounded-l-2xl">
                 <User />

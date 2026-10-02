@@ -29,7 +29,8 @@ const Login = () => {
             navigate('/');
 
         } catch (error) {
-            console.error(error.response.data.message);
+            //console.log(data)
+            console.error(error.response?.data?.message || error.message);
         }
     }
 

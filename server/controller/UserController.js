@@ -112,10 +112,39 @@ const getGenreImage = async(req,res) => {
 
 }
 
+//dati del profilo 
+
+const updateProfileSettings = async(req,res) => {
+  try {
+    const userId = req.user._id; 
+    const newPref = req.body; //le preferenze del profilo sono una mappa a 4 coincide con quella nel database 
+
+    if (!userId) {
+      return res.status(404).json({message:"utente inesistente"})
+    }
+    
+    const updatedPref = await User.findByIdAndUpdate(
+      userId,
+      {profile_visibility:newPref},
+      {new : true} //per fare in modo che in updatedPref ci sia la versione aggiornata
+    )
+
+      res.json({ message: "Aggiornato con successo!",});
+    } catch (error) {
+        res.status(500).json({ message: "Errore del server", error: error.message });
+    }
+   }
+
+
+
+
+
+
 module.exports = {
   getUserData,
   getUserLocation,
   getExternalUserData,
   updateGenresImages,
   getGenreImage,
+  updateProfileSettings,
 };
