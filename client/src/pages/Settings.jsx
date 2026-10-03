@@ -1,16 +1,18 @@
 import { useState } from "react"
 import Navbar from "../components/Navbar"
 import axiosClient from "../api/axiosConfig"
-
+import { useEffect } from "react"
 
 
 const Settings = () => {
 
-//ipostazioni profilo
-const [isCheckedBio,setIsCheckedBio] = useState(false) //da cambiare con i valori di verita provienti dal database
-const [isCheckedBooks,setIsCheckedBooks] = useState(false)
-const [isCheckedLoans,setIsCheckedLoans] = useState(false)
-const [isCheckedExternalLinks,setIsCheckedExternalLinks] = useState(false)
+
+
+//impostazioni profilo
+const [isCheckedBio,setIsCheckedBio] = useState() //da cambiare con i valori di verita provienti dal database
+const [isCheckedBooks,setIsCheckedBooks] = useState()
+const [isCheckedLoans,setIsCheckedLoans] = useState()
+const [isCheckedExternalLinks,setIsCheckedExternalLinks] = useState()
 
 
 const handleCheckboxChangeBio = (e) => {
@@ -25,6 +27,27 @@ const handleCheckboxChangeLoans = (e) => {
 const handleCheckboxChangeExternalLinks = (e) => {
     setIsCheckedExternalLinks(e.target.checked)
 }
+
+//raccolgo i dati gia inviati 
+const retrievePreferences = async() => {
+    try {
+        const pref = await axiosClient.get("/api/user/retrieve_pref")
+        console.log(pref.data)
+        const visibility = pref.data.Upref.profile_visibility
+
+      // Aggiorniamo i singoli stati dei checkbox con i valori del DB
+      setIsCheckedBio(visibility.bio ?? false)
+      setIsCheckedBooks(visibility.books ?? false)
+      setIsCheckedExternalLinks(visibility.external_links ?? false)
+      setIsCheckedLoans(visibility.loans ?? false)
+       
+
+    } catch (e) 
+    {
+        console.log(e)
+    }
+}
+
 
 //salvo i dati delle preferenze e le mando al db
 const HandleSavePreferences = async() => {
@@ -44,14 +67,25 @@ const HandleSavePreferences = async() => {
   };
 
 
+useEffect(() => { 
+
+    retrievePreferences()
+
+
+
+},[])
+
+//console.log()
 
 return (
     <div className="">
           <Navbar></Navbar>
+
         <div className="grid grid-cols-5">
         
+        {/* parte della  visibilità del profilo */}
         
-        <div class=" flex flex-col rounded-2xl border-2 border-gray-500 col-span-3 mt-12 col-start-2">
+        <div className=" flex flex-col rounded-2xl border-2 border-gray-500 col-span-3 mt-12 col-start-2">
             <div>
                 <p className="text-2xl p-3 mr-2 font-bold">
                   Profile Settings
@@ -127,6 +161,30 @@ return (
 
                     </div>
 
+            
+
+                </div>
+
+            
+
+            </div>
+
+            {/* Parte della geolocalizzazione */}
+            <div className=" flex flex-col rounded-2xl border-2 border-gray-500 col-span-3 mt-12 col-start-2">
+            <div>
+                <p className="text-2xl p-3 mr-2 font-bold">
+                 Geolocalization Settings
+                </p>
+            </div>
+
+
+            <div className="flex flex-row items-center justify-around mb-6">
+                    <div className="w-62  ">
+                <p className="text-gray-600 text-xl">
+                    Here you can decide when and if the app will retrieve your position
+                </p>
+                    </div>
+                    
             
 
                 </div>

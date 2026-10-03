@@ -112,7 +112,25 @@ const getGenreImage = async(req,res) => {
 
 }
 
-//dati del profilo 
+//prefernze del profilo 
+
+const RetrieveSettings = async(req,res) => {
+  try {
+    const userId = req.user._id;
+
+    const Upref = await User.findById(
+      userId,
+      "profile_visibility",
+    )
+
+    res.json({message:"retrieved settings", Upref});
+  
+
+  } catch (e) {
+    console.log(e)
+    res.status(500).json({message: "Errore del server", error: error.message})
+  }
+}
 
 const updateProfileSettings = async(req,res) => {
   try {
@@ -147,4 +165,5 @@ module.exports = {
   updateGenresImages,
   getGenreImage,
   updateProfileSettings,
+  RetrieveSettings,
 };

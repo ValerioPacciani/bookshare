@@ -8,6 +8,7 @@ const userRouter = express.Router();
 //for not the active user, but for the external ones
 userRouter.get("/external/data/:id",protectionMiddleware,controller.getExternalUserData)
 userRouter.get("/genres_images",protectionMiddleware,controller.getGenreImage)
+userRouter.get("/retrieve_pref",protectionMiddleware,controller.RetrieveSettings)
 
 userRouter.post("/genres_images/:genre",protectionMiddleware,imagesMiddleware.single("genre_image"),controller.updateGenresImages)
 
