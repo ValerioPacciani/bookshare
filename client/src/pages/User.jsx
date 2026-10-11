@@ -4,7 +4,7 @@ import axiosClient from "../api/axiosConfig";
 import { useEffect, useState } from "react";
 import Bookcard from "../components/Bookcard"
 
-
+//Questa è la pagine di Utente esterno. per la pagina di profilo personale fare riferimento ad USER -> credo che possa coincidere
 const User = () => {
 
     const [userData,setUserData] = useState({})

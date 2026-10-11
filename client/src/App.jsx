@@ -11,7 +11,7 @@ import Profile from './pages/Profile'
 import User from "./pages/User";
 import Settings from "./pages/Settings";
 
-//REMBER TODO quando creo una chiamata di post se ho un immagine devo farlo sempre con multipart/form-data altimenti multer mi da errore nel backend
+//TODO quando creo una chiamata di post se ho un immagine devo farlo sempre con multipart/form-data altimenti multer mi da errore nel backend
 
 function App() {
   return (

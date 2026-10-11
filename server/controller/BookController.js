@@ -94,7 +94,7 @@ const deleteBook = async (req, res) => {
 
 const updateBook = async (req, res) => {
   try {
-    const { title, author, isbn, categories, isOnShare } = req.body;
+    const { title, author, isbn, categories, isOnShare, read_percentage, book_type } = req.body;
 
     let coverImage = "";
     if (req.file) {
@@ -106,7 +106,7 @@ const updateBook = async (req, res) => {
 
     const book = await Book.findOneAndUpdate(
       { _id: req.params.id, owner: req.user._id },
-      { title, author, isbn, coverImage, categories, isOnShare },
+      { title, author, isbn, coverImage, categories, isOnShare, read_percentage, book_type },
       { new: true }, //ritorna il libro aggiornato
     );
     if (!book) {

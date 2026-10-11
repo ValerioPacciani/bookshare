@@ -55,7 +55,7 @@ const Home = () => {
     const  fetchImage = async () => {
         try {
             const resp = await axiosClient.get("/api/user/genres_images")
-            console.log("risposta dla server", resp.data)
+            console.log("risposta dal server", resp.data)
             setDisplayImage(resp.data.genres_images)
 
         } catch (e) {

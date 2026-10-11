@@ -33,6 +33,8 @@ const retrievePreferences = async() => {
     try {
         const pref = await axiosClient.get("/api/user/retrieve_pref")
         console.log(pref.data)
+
+        //variabile di appoggio
         const visibility = pref.data.Upref.profile_visibility
 
       // Aggiorniamo i singoli stati dei checkbox con i valori del DB
