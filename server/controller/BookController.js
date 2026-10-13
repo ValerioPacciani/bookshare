@@ -193,6 +193,138 @@ const getCostants = async(req,res) => {
   }
 }
 
+//ENDPOINTS FOR STATISTICS 
+
+const getBooksStatistics = async(req,res) => {
+  try {
+    const userId = req.user._id
+
+    let StatResponse = { //oggetto che conterrà le statistiche, per la riposta al frontend
+      total_books : 0,
+      total_books_on_share: 0,
+      number_of_categories : {}, //una mappa del tipo nome_categoria : numero di libri che hanno quella categoria
+      number_of_genres : {},
+      reading_percentage_average : 0,
+      total_read_books : 0, 
+    }
+    //FILTRI STATISTICI PER NUMERI INTERI SEMPLICI
+    const totalBooks = await Book.aggregate([{
+      $match : {
+        owner : userId
+      }},
+      {$group :{
+        //ragruppo per owner, ovvero prendo ogni libro e per ogni record creo il campo total, che avra sommato ogni record preso
+        _id :"$owner", //necessario per la sintassi di group
+        total : {$sum: 1}
+
+      }
+    
+    }])
+      const totalBooksShared = await Book.aggregate([{
+      $match : {
+        owner : userId,
+        isOnShare : true
+      }},
+      {$group :{
+        
+        _id :"$owner", 
+        total : {$sum: 1}
+
+      }
+    
+    }])
+    const totalBooksRead = await Book.aggregate([{
+      $match : {
+        owner : userId,
+        read_percentage: 100
+      }},
+      {$group :{
+        
+        _id :"$owner", 
+        total : {$sum: 1}
+
+      }
+    
+    }])
+
+    const AverageReadPercentage = await Book.aggregate([
+      { $match : {
+        owner : userId,
+        read_percentage : {$ne : 0}
+      }},
+      { $group : {
+        _id : "$owner",
+        average : {$avg: "$read_percentage"}
+      }
+        }])
+
+    StatResponse.total_books = totalBooks[0].total
+    StatResponse.total_books_on_share = totalBooksShared[0].total
+    StatResponse.total_read_books = totalBooksRead[0].total
+    StatResponse.reading_percentage_average = AverageReadPercentage[0].average
+   
+      //FILTRI PER LE MAPPE 
+
+    const GenresCount = await Book.aggregate([
+      {$match :{
+        owner: userId
+      }},
+      {$group : {
+        _id : "$book_type",
+        total : {$sum : 1 }
+      }
+
+      }
+    ])
+
+    const CategoriesCount = await Book.aggregate([
+      {$match :{
+        owner: userId
+      }},
+      {
+        //scompatta l'array di categorie in modo che ognuno possa entrare una sola volta nell _id
+        $unwind: "$categories"
+      },
+      {$group : {
+        _id : "$categories",
+        total : {$sum : 1 }
+      }
+
+      }
+    ])
+
+    //console.log(CategoriesCount)
+    const CategoriesReduced =  CategoriesCount.reduce((acc , curr ) => {
+      if (curr.total != undefined) {
+        acc[curr._id] = curr.total //equivale a mandare dinamicamente per ogni giro acc.curr._id = curr.total
+    } else {
+      acc[curr._id] = 0;
+    }
+
+   
+    return acc
+    }, {})
+
+     const GenresReduced =  GenresCount.reduce((acc , curr ) => {
+      if (curr.total != undefined) {
+        acc[curr._id] = curr.total //equivale a mandare dinamicamente per ogni giro acc.curr._id = curr.total
+    } else {
+      acc[curr._id] = 0;
+    }
+    return acc
+    }, {})
+
+    console.log(GenresCount)
+    StatResponse.number_of_categories = CategoriesCount;
+    StatResponse.number_of_genres = GenresCount;
+    return (res.status(200).json(StatResponse))
+  } catch (e) {
+
+    console.log(e.message)
+    return( res.status(500).json({message:e.message}))
+  }
+}
+
 module.exports = {
   getAllBooks,
   getBookById,
@@ -202,4 +334,5 @@ module.exports = {
   getNearBooks,
   getBooksOnShare,
   getCostants,
+  getBooksStatistics
 };

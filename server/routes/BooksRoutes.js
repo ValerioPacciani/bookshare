@@ -23,6 +23,8 @@ BookRouter.post(
   controller.createBook,
 ); //sui post avro anche l upload per gestire le immagini
 
+BookRouter.get("/stats",protectionMiddleware,controller.getBooksStatistics);
+
 BookRouter.get("/near", protectionMiddleware, controller.getNearBooks);
 BookRouter.get(
   "/onShare/:id",

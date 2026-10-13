@@ -82,7 +82,8 @@ const BookDetail = () => {
       <Navbar></Navbar>
       <div className="flex flex-row">
         <div className={`h-full min-h-full min-w-64 max-w-64 p-1 ${book?.read_percentage === 100 ? "bg-green-700" : "bg-amber-300" }`}>
-          <img src={book?.coverImage}></img>
+          <img src={book?.coverImage}>
+          </img>
           <div className="h-9">
             <PercentageBar data = {book?.read_percentage}></PercentageBar>
           </div>
