@@ -4,7 +4,7 @@ import Navbar from "../components/Navbar";
 import axiosClient from "../api/axiosConfig";
 import GenericDataCard from "../components/GenericDataCard";
 
-import {ResponsiveContainer,Pie,PieChart,Cell} from "recharts"
+import {ResponsiveContainer,Pie,PieChart,Cell, Legend, Tooltip} from "recharts"
 
 //colori per le pieChart
 const COLORS = [
@@ -43,6 +43,8 @@ const GENRESCOLORS = [
   '#3498DB', // Celeste
 ]
 
+
+// CARD GRAFICA
 function DataHolder ({data, description}) {
   return (
     <div className="flex flex-col items-center h-32 w-full border rounded-2xl border-gray-600  bg-pink-100">
@@ -81,6 +83,7 @@ const Profile = () => {
   }, []);
 
   console.log(profileData);
+  console.log(booksStatData.number_of_categories)
   //console.log("bookData : "+booksStatData.number_of_categories)
  //console.log(Object.keys(booksStatData?.number_of_categories))
   //console.log(profileData.avatar);
@@ -89,9 +92,22 @@ const Profile = () => {
     <div>
       <Navbar></Navbar>
       <div className="mt-12 h-screen bg-slate-200 max-w-7xl mx-auto p-6 flex flex-col items-center rounded-2xl border border-gray-800">
-        <div className="m-4 w-48 h-48 bg-amber-500 rounded-2xl border border-gray-600">
-          <img src = {profileData?.avatar}>
+        <div className="grid grid-cols-2 gap-2">
+        <div className="col-1 m-4 w-48 h-48 bg-amber-500 rounded-2xl overflow-hidden border border-gray-600">
+          <img className="object-cover w-full h-full "  
+          src = {profileData?.avatar}>
           </img>
+        </div>
+        <div className="col-2 m-4 pl-12  flex flex-col justify-evenly">
+            <span className="font-bold text-4xl">
+              {profileData?.name}
+            </span>
+           
+            <span className="font-light  text-gray-800">
+              {profileData?.email}
+            </span>
+           
+          </div>
         </div>
         <div className="mt-4 w-full h-16">
           badges
@@ -129,52 +145,74 @@ const Profile = () => {
 
 
         {/* terza riga grafici */}
-
-          <div className="h-82 col-span-2 border-black border">
+              <div className = "h-86 col-span-2 flex flex-col justify-center items-center border border-black rounded-2xl mt-3">
+                <span className="font-bold text-2xl text-gray-800">
+                  Distribution of books by categories
+                </span>
+            <div className="flex-1 w-full min-h-0 ">
+          
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
                   data={booksStatData?.number_of_categories}
                   cx="50%"          // Centro
-                  cy="50%"          
+                  cy="50%"    
+                  dataKey = "total"
+                  nameKey = "_id"       
                   innerRadius={50}  // Se metti 0 è una torta piena, se metti es. 50 diventa una ciambella 
-                  outerRadius={80}  // Grandezza della torta
+                  outerRadius={100}  // Grandezza della torta
                   paddingAngle={4}  // Spazio tra una fetta e l'altra (stile moderno)
-                  dataKey="total"   // La chiave dell'oggetto che contiene il numero da contare
+                    
                 >
                 {booksStatData?.number_of_categories?.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
-       
-
+                  <Legend></Legend>
+                  <Tooltip></Tooltip>
                 </Pie>
               </PieChart>
             </ResponsiveContainer>
           </div>
+          </div>
             {/*SECONDO GRAFICO*/}
-            <div className="h-82 col-span-2 border-black border">
+            <div className = "h-86 col-span-2 flex flex-col justify-center items-center border border-black rounded-2xl mt-3">
+              <span className="font-bold text-2xl text-gray-800">
+                Distribution of books by genre
+              </span>
+            <div className="flex-1 w-full min-h-0 ">
+              
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
                   data={booksStatData?.number_of_genres}
                   cx="50%"          // Centro
-                  cy="50%"          
+                  cy="50%" 
+                  dataKey = "total"
+                  nameKey = "_id"         
                   innerRadius={50}  // Se metti 0 è una torta piena, se metti es. 50 diventa una ciambella 
-                  outerRadius={80}  // Grandezza della torta
+                  outerRadius={100}  // Grandezza della torta
                   paddingAngle={4}  // Spazio tra una fetta e l'altra (stile moderno)
-                  dataKey="total"   // La chiave dell'oggetto che contiene il numero da contare
+                    
                 >
                 {booksStatData?.number_of_genres?.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={GENRESCOLORS[index % COLORS.length]} />
                   ))}
-       
-
+                  <Legend></Legend>
+                 <Tooltip></Tooltip>
                 </Pie>
               </PieChart>
             </ResponsiveContainer>
           </div>
         </div>
-        
+        </div>
+
+        {/*Informazioni Personali */}
+        <div className="flex flex-row w-full mt-16">
+          <span>
+            Instagram
+          </span>
+        </div>
+              
     </div>
     </div> 
 
