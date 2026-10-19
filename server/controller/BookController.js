@@ -258,10 +258,10 @@ const getBooksStatistics = async(req,res) => {
       }
         }])
 
-    StatResponse.total_books = totalBooks[0].total
-    StatResponse.total_books_on_share = totalBooksShared[0].total
-    StatResponse.total_read_books = totalBooksRead[0].total
-    StatResponse.reading_percentage_average = AverageReadPercentage[0].average
+    StatResponse.total_books = totalBooks[0]?.total
+    StatResponse.total_books_on_share = totalBooksShared[0]?.total
+    StatResponse.total_read_books = totalBooksRead[0]?.total
+    StatResponse.reading_percentage_average = AverageReadPercentage[0]?.average
    
       //FILTRI PER LE MAPPE 
 

@@ -143,7 +143,9 @@ const updateProfileSettings = async(req,res) => {
     
     const updatedPref = await User.findByIdAndUpdate(
       userId,
-      {profile_visibility:newPref},
+      {profile_visibility:newPref
+      
+      },
       {new : true} //per fare in modo che in updatedPref ci sia la versione aggiornata
     )
 

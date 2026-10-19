@@ -6,6 +6,7 @@ const userSchema = new mongoose.Schema(
     display_name: {
       type: String,
       trim: true,
+      default: this.name
     },
     surname: {
       type: String,
@@ -35,7 +36,28 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
+    //Trustiness, si collega alle varie loan per il calcolo dell indice
+    trust_index: {
+      type:Number,
+      default: 80,
+      min: 0,
+      max : 100,
+    },
 
+    //Link Esterni 
+    external_links: {
+      type : Map,
+      of : String,
+      default:{
+        "instagram": "",
+        "facebook" : "",
+        "whatsapp" : "",
+        "telegram" : ""
+        
+      },
+      required: false,
+    },
+    
     //campi per le immagini 
     genres_images:{
       type:Map,

@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useRef, useState } from "react"
 import Navbar from "../components/Navbar"
 import axiosClient from "../api/axiosConfig"
 import { useEffect } from "react"
@@ -14,7 +14,15 @@ const [isCheckedBooks,setIsCheckedBooks] = useState()
 const [isCheckedLoans,setIsCheckedLoans] = useState()
 const [isCheckedExternalLinks,setIsCheckedExternalLinks] = useState()
 
+const [userData,setUserData] = useState(null);
 
+const ProfilePictureRef = useRef(null);
+
+//simuliamo il click del input anche se viene clickato quello sopra
+const HandleClickAvatarInput = () => {
+    ProfilePictureRef.current.click();
+}
+//Dati DELLA VISIBILITà del profilo
 const handleCheckboxChangeBio = (e) => {
     setIsCheckedBio(e.target.checked)
 }
@@ -26,6 +34,38 @@ const handleCheckboxChangeLoans = (e) => {
 }
 const handleCheckboxChangeExternalLinks = (e) => {
     setIsCheckedExternalLinks(e.target.checked)
+}
+
+//PROFILO
+const handleInput = (e) => {
+    const {name, value} = e.target //prendo dinamicamente tutti gli input
+    setUserData(prev => ({
+        ...prev,
+        [name] : value //li inserisco nella struttura che gia ho 
+    }))
+}
+//LINKS 
+const handleLinksInput = (e) => {
+    const {name,value} = e.target
+    setUserData(prev => ({
+        ...prev,
+        external_links : { //Stesso concetto di prima ma è nested ,quindi devo applicare lo spread due volte
+            ...prev.external_links,
+            [name] : value 
+        }
+    }))
+}
+
+//raccolgo i dati del profilo
+const retrieveProfileData = async () => {
+    try {
+        const respdata = await axiosClient.get("api/user/data")
+        setUserData(respdata.data);
+        console.log(respdata.data)
+
+    } catch (e) {
+        console.log(e.message)
+    }
 }
 
 //raccolgo i dati gia inviati 
@@ -50,6 +90,12 @@ const retrievePreferences = async() => {
     }
 }
 
+//invio i dati delle modifiche al db (dati del profilo)
+
+const HandleProfileDataModification = async() => {
+   
+   console.log("hehe")
+}
 
 //salvo i dati delle preferenze e le mando al db
 const HandleSavePreferences = async() => {
@@ -72,18 +118,171 @@ const HandleSavePreferences = async() => {
 useEffect(() => { 
 
     retrievePreferences()
+    retrieveProfileData()
 
 
 
 },[])
-
-//console.log()
+console.log(userData)
 
 return (
     <div className="">
           <Navbar></Navbar>
 
         <div className="grid grid-cols-5">
+
+        {/* PARTE DELLA MODIFICA DEL PROFILO */}
+        <div className="flex flex-col rounded-2xl border-2 border-gray-500 col-span-3 mt-12 col-start-2"> 
+            <div>
+                <p className="text-2xl p-3 mr-2 font-bold">
+                  Modify Your profile Data
+                </p>
+            </div>
+             <div className="flex flex-row items-center justify-around mb-6">
+                    <div className="w-62  ">
+                <p className="text-gray-600 text-xl">
+                    Here you can change the data of your profile
+                </p>
+                </div>
+                
+            <div className="flex-col flex min-w-62 gap-6">
+                <div className="flex flex-col p-2 m-1">
+                    <span>
+                        Name
+                    </span>
+                    <input
+                    type="text" name="name" id="name" placeholder={userData?.name} onChange={handleInput}>
+                    </input>
+                </div>
+
+                <div className="flex flex-col p-2 m-1 ">
+                    <span>
+                        Surname
+                    </span>
+                    <input
+                    type="text" name="surname" id="surname" placeholder={userData?.surname} onChange={handleInput}>
+                    </input>
+                </div>
+
+
+                <div className="flex flex-col p-2 m-1 ">
+                    <span>
+                       Email
+                    </span>
+                    <input
+                    type="email" name="email" id="email" placeholder={userData?.email} onChange={handleInput}>
+                    </input>
+                </div>
+
+                     <div className="flex flex-col p-2 m-1 ">
+                    <span>
+                       Username
+                    </span>
+                    <input
+                    type="text" name="display_name" id="display_name" placeholder={userData?.diplay_name} onChange={handleInput}>
+                    </input>
+                </div> 
+
+            <div className="flex flex-col  p-2 m-1">
+                    <span>
+                       Profile Image
+                    </span>
+                    <input
+                    ref={ProfilePictureRef}
+                    className="hidden"
+                    type="file" name="display_name" id="diplay_name" placeholder="Enter username">
+                    </input>
+                    <div className="h-12 w-72 border-dashed border-2 border-blue-400 rounded-2xl"
+                    onClick={HandleClickAvatarInput}>
+
+                    </div>
+                </div> 
+
+                <div className="pl-2 mt-4">
+                            <button className="flex felx-row items-center justify-center w-20 h-8 p-3 m-1 bg-gray-300 hover:bg-gray-100 rounded-2xl border border-gray-800 hover:border-gray-400"
+                                onClick= {HandleProfileDataModification}>
+                                <p>Update </p>
+                            </button>
+                        </div>
+
+
+                </div>
+            </div>
+                    
+        </div>
+
+        {/*PARTE DEI LINK ESTERNI */}
+            <div className="flex flex-col rounded-2xl border-2 border-gray-500 col-span-3 mt-12 col-start-2"> 
+            <div>
+                <p className="text-2xl p-3 mr-2 font-bold">
+                    External Links
+                </p>
+            </div>
+             <div className="flex flex-row items-center justify-around mb-6">
+                    <div className="w-62  ">
+                <p className="text-gray-600 text-xl">
+                    Here you can modify your external link, those will be really usefull for sharing and take the request from the other Users!
+                </p>
+                </div>
+                
+            <div className="flex-col flex min-w-62 gap-6">
+                <div className="flex flex-col p-2 m-1">
+                    <span>
+                      Facebook
+                    </span>
+                    <input
+                    onChange={handleLinksInput}
+                    type="text" name="name" id="name" placeholder={userData?.external_links.facebook}>
+                    </input>
+                </div>
+
+                <div className="flex flex-col p-2 m-1 ">
+                    <span>
+                        Instagram
+                    </span>
+                    <input
+                    onChange={handleLinksInput}
+                    type="text" name="surname" id="surname" placeholder={userData?.external_links.instagram}>
+                    </input>
+                </div>
+
+
+                <div className="flex flex-col p-2 m-1 ">
+                    <span>
+                       Telegram
+                    </span>
+                    <input
+                    onChange={handleLinksInput}
+                    type="email" name="email" id="email" placeholder={userData?.external_links.telegram}>
+                    </input>
+                </div>
+
+                     <div className="flex flex-col p-2 m-1 ">
+                    <span>
+                      Whatsapp
+                    </span>
+                    <input
+                    onChange={handleLinksInput}
+                    type="text" name="display_name" id="diplay_name" placeholder={userData?.external_links.whatsapp}>
+                    </input>
+                </div> 
+
+                    <div className="pl-2 mt-4">
+                            <button className="flex felx-row items-center justify-center w-20 h-8 p-3 m-1 bg-gray-300 hover:bg-gray-100 rounded-2xl border border-gray-800 hover:border-gray-400"
+                                >
+                                <p>Update </p>
+                            </button>
+                        </div>
+
+            
+
+                </div>
+            </div>
+                    
+        </div>
+
+
+
         
         {/* parte della  visibilità del profilo */}
         
